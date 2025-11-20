@@ -1,14 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { User, LogOut, LayoutDashboard, Sparkles } from 'lucide-react';
+} from "@/components/ui/dropdown-menu";
+import { User, LogOut, LayoutDashboard, Sparkles, MessageCircle } from "lucide-react";
 
 export const Navigation = () => {
   const { user, signOut } = useAuth();
@@ -19,7 +19,7 @@ export const Navigation = () => {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 group">
           <Sparkles className="w-6 h-6 text-primary animate-pulse-glow" />
-          <span className="text-xl font-bold text-gradient">TAMV Nexus</span>
+          <span className="text-xl font-bold text-gradient story-link">TAMV Nexus</span>
         </Link>
 
         <div className="flex items-center gap-4">
@@ -27,21 +27,30 @@ export const Navigation = () => {
             <>
               <Button
                 variant="ghost"
-                onClick={() => navigate('/dashboard')}
-                className="text-foreground hover:text-primary"
+                onClick={() => navigate("/dashboard")}
+                className="text-foreground hover:text-primary hover-scale"
               >
                 <LayoutDashboard className="w-4 h-4 mr-2" />
                 Dashboard
               </Button>
 
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/ai-chat")}
+                className="text-foreground hover:text-primary hover-scale"
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                Isabella
+              </Button>
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="rounded-full border-primary/50">
+                  <Button variant="outline" size="icon" className="rounded-full border-primary/50 hover-scale">
                     <User className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => navigate('/profile')}>
+                  <DropdownMenuItem onClick={() => navigate("/profile")}>
                     <User className="w-4 h-4 mr-2" />
                     Profile
                   </DropdownMenuItem>
@@ -54,7 +63,7 @@ export const Navigation = () => {
               </DropdownMenu>
             </>
           ) : (
-            <Button onClick={() => navigate('/auth')} className="glow-cyan">
+            <Button onClick={() => navigate("/auth")} className="glow-cyan hover-scale">
               Sign In
             </Button>
           )}

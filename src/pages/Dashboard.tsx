@@ -100,37 +100,45 @@ const Dashboard = () => {
           </div>
 
           {/* Quick Actions */}
-          <Card className="border-primary/30 glow-cyan mb-8">
+          <Card className="border-primary/30 glow-cyan mb-8 animate-enter">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="w-5 h-5 text-primary" />
-                Quick Actions
+                Acciones rápidas
               </CardTitle>
-              <CardDescription>Get started with these common tasks</CardDescription>
+              <CardDescription>Accede a los módulos clave del Nexus.</CardDescription>
             </CardHeader>
-            <CardContent className="grid md:grid-cols-3 gap-4">
+            <CardContent className="grid md:grid-cols-4 gap-4">
               <Button
-                onClick={() => navigate('/ai-chat')}
-                className="h-auto py-6 flex flex-col items-center gap-2 glow-cyan"
+                onClick={() => navigate("/ai-chat")}
+                className="h-auto py-6 flex flex-col items-center gap-2 glow-cyan hover-scale"
               >
                 <Brain className="w-6 h-6" />
-                <span>AI Assistant</span>
+                <span>Isabella</span>
               </Button>
               <Button
-                onClick={() => navigate('/nexus')}
+                onClick={() => navigate("/nexus")}
                 variant="outline"
-                className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50"
+                className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50 hover-scale"
               >
                 <Network className="w-6 h-6" />
-                <span>Manage Entities</span>
+                <span>Entidades</span>
               </Button>
               <Button
-                onClick={() => navigate('/assets')}
+                onClick={() => navigate("/store")}
                 variant="outline"
-                className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50"
+                className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50 hover-scale"
               >
                 <Sparkles className="w-6 h-6" />
-                <span>Digital Assets</span>
+                <span>Tienda</span>
+              </Button>
+              <Button
+                onClick={() => navigate("/gallery")}
+                variant="outline"
+                className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50 hover-scale"
+              >
+                <Sparkles className="w-6 h-6" />
+                <span>Galería</span>
               </Button>
             </CardContent>
           </Card>
