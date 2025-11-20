@@ -42,6 +42,14 @@ const App = () => (
               }
             />
             <Route
+              path="/isabella"
+              element={
+                <ProtectedRoute>
+                  <AIChat />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/nexus"
               element={
                 <ProtectedRoute>
