@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_context_memory: {
+        Row: {
+          context_key: string
+          context_value: Json
+          created_at: string
+          id: string
+          last_accessed: string
+          relevance_score: number | null
+          user_id: string
+        }
+        Insert: {
+          context_key: string
+          context_value: Json
+          created_at?: string
+          id?: string
+          last_accessed?: string
+          relevance_score?: number | null
+          user_id: string
+        }
+        Update: {
+          context_key?: string
+          context_value?: Json
+          created_at?: string
+          id?: string
+          last_accessed?: string
+          relevance_score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_interactions: {
         Row: {
           created_at: string | null
@@ -101,6 +131,174 @@ export type Database = {
         }
         Relationships: []
       }
+      digital_inventory: {
+        Row: {
+          acquired_at: string
+          asset_id: string | null
+          id: string
+          is_locked: boolean | null
+          metadata: Json | null
+          quantity: number | null
+          user_id: string
+        }
+        Insert: {
+          acquired_at?: string
+          asset_id?: string | null
+          id?: string
+          is_locked?: boolean | null
+          metadata?: Json | null
+          quantity?: number | null
+          user_id: string
+        }
+        Update: {
+          acquired_at?: string
+          asset_id?: string | null
+          id?: string
+          is_locked?: boolean | null
+          metadata?: Json | null
+          quantity?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "digital_inventory_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "digital_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      entity_purposes: {
+        Row: {
+          context: Json | null
+          created_at: string
+          entity_id: string
+          id: string
+          is_active: boolean | null
+          priority: number | null
+          purpose_type: string
+        }
+        Insert: {
+          context?: Json | null
+          created_at?: string
+          entity_id: string
+          id?: string
+          is_active?: boolean | null
+          priority?: number | null
+          purpose_type: string
+        }
+        Update: {
+          context?: Json | null
+          created_at?: string
+          entity_id?: string
+          id?: string
+          is_active?: boolean | null
+          priority?: number | null
+          purpose_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entity_purposes_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "nexus_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      entity_relationships: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json | null
+          relationship_type: string
+          source_entity_id: string
+          strength: number | null
+          target_entity_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          relationship_type: string
+          source_entity_id: string
+          strength?: number | null
+          target_entity_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          relationship_type?: string
+          source_entity_id?: string
+          strength?: number | null
+          target_entity_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entity_relationships_source_entity_id_fkey"
+            columns: ["source_entity_id"]
+            isOneToOne: false
+            referencedRelation: "nexus_entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "entity_relationships_target_entity_id_fkey"
+            columns: ["target_entity_id"]
+            isOneToOne: false
+            referencedRelation: "nexus_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_listings: {
+        Row: {
+          asset_id: string | null
+          created_at: string
+          currency: string | null
+          expires_at: string | null
+          id: string
+          metadata: Json | null
+          price: number
+          seller_id: string
+          status: string | null
+        }
+        Insert: {
+          asset_id?: string | null
+          created_at?: string
+          currency?: string | null
+          expires_at?: string | null
+          id?: string
+          metadata?: Json | null
+          price: number
+          seller_id: string
+          status?: string | null
+        }
+        Update: {
+          asset_id?: string | null
+          created_at?: string
+          currency?: string | null
+          expires_at?: string | null
+          id?: string
+          metadata?: Json | null
+          price?: number
+          seller_id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_listings_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "digital_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       nexus_entities: {
         Row: {
           created_at: string | null
@@ -166,6 +364,57 @@ export type Database = {
           username?: string | null
         }
         Relationships: []
+      }
+      transactional_metadata: {
+        Row: {
+          entity_id: string | null
+          hash: string | null
+          id: string
+          parent_transaction_id: string | null
+          payload: Json
+          state_snapshot: Json | null
+          timestamp: string
+          transaction_type: string
+          user_id: string | null
+        }
+        Insert: {
+          entity_id?: string | null
+          hash?: string | null
+          id?: string
+          parent_transaction_id?: string | null
+          payload?: Json
+          state_snapshot?: Json | null
+          timestamp?: string
+          transaction_type: string
+          user_id?: string | null
+        }
+        Update: {
+          entity_id?: string | null
+          hash?: string | null
+          id?: string
+          parent_transaction_id?: string | null
+          payload?: Json
+          state_snapshot?: Json | null
+          timestamp?: string
+          transaction_type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactional_metadata_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "nexus_entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactional_metadata_parent_transaction_id_fkey"
+            columns: ["parent_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactional_metadata"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

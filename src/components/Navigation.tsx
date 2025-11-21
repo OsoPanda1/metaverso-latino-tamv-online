@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, LogOut, LayoutDashboard, Sparkles, MessageCircle } from "lucide-react";
+import { User, LogOut, LayoutDashboard, Sparkles, MessageCircle, Network, Store, Image, Users, Package, ShoppingCart } from "lucide-react";
 
 export const Navigation = () => {
   const { user, signOut } = useAuth();
@@ -42,6 +42,41 @@ export const Navigation = () => {
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Isabella
               </Button>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="border-primary/50 hover-scale">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Nexus
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem onClick={() => navigate("/nexus")}>
+                    <Network className="w-4 h-4 mr-2" />
+                    Entities
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/inventory")}>
+                    <Package className="w-4 h-4 mr-2" />
+                    Inventory
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/marketplace")}>
+                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    Marketplace
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/store")}>
+                    <Store className="w-4 h-4 mr-2" />
+                    Digital Store
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/gallery")}>
+                    <Image className="w-4 h-4 mr-2" />
+                    Art Gallery
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/social")}>
+                    <Users className="w-4 h-4 mr-2" />
+                    Social Hub
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
