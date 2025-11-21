@@ -16,6 +16,10 @@ import Gallery from "./pages/Gallery";
 import SocialHub from "./pages/SocialHub";
 import Inventory from "./pages/Inventory";
 import Marketplace from "./pages/Marketplace";
+import IdNvida from "./pages/IdNvida";
+import Privacy from "./pages/Privacy";
+import Guardians from "./pages/Guardians";
+import EmotionalDiary from "./pages/EmotionalDiary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -107,6 +111,38 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Marketplace />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/id-nvida"
+              element={
+                <ProtectedRoute>
+                  <IdNvida />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/privacy"
+              element={
+                <ProtectedRoute>
+                  <Privacy />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/guardians"
+              element={
+                <ProtectedRoute>
+                  <Guardians />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/emotional-diary"
+              element={
+                <ProtectedRoute>
+                  <EmotionalDiary />
                 </ProtectedRoute>
               }
             />

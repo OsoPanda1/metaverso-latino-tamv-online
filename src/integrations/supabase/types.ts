@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_logs: {
+        Row: {
+          created_at: string | null
+          event_type: string
+          guardian_id: string | null
+          id: string
+          ip_address: string | null
+          location: Json | null
+          metadata: Json | null
+          resource_id: string | null
+          resource_type: string | null
+          risk_level: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_type: string
+          guardian_id?: string | null
+          id?: string
+          ip_address?: string | null
+          location?: Json | null
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          risk_level?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_type?: string
+          guardian_id?: string | null
+          id?: string
+          ip_address?: string | null
+          location?: Json | null
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          risk_level?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_logs_guardian_id_fkey"
+            columns: ["guardian_id"]
+            isOneToOne: false
+            referencedRelation: "guardians"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_context_memory: {
         Row: {
           context_key: string
@@ -98,6 +151,54 @@ export type Database = {
         }
         Relationships: []
       }
+      data_permissions: {
+        Row: {
+          created_at: string | null
+          expires_at: string | null
+          granted_at: string | null
+          granted_to: string
+          granted_to_type: string
+          id: string
+          metadata: Json | null
+          permission_level: string
+          resource_id: string | null
+          resource_type: string
+          revoked: boolean | null
+          revoked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_to: string
+          granted_to_type: string
+          id?: string
+          metadata?: Json | null
+          permission_level?: string
+          resource_id?: string | null
+          resource_type: string
+          revoked?: boolean | null
+          revoked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_to?: string
+          granted_to_type?: string
+          id?: string
+          metadata?: Json | null
+          permission_level?: string
+          resource_id?: string | null
+          resource_type?: string
+          revoked?: boolean | null
+          revoked_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       digital_assets: {
         Row: {
           asset_type: string
@@ -127,6 +228,66 @@ export type Database = {
           is_public?: boolean | null
           metadata?: Json | null
           name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      digital_credentials: {
+        Row: {
+          avatar_url: string | null
+          birthdate: string | null
+          created_at: string | null
+          credential_type: string
+          did: string
+          email: string | null
+          expires_at: string | null
+          guardian_signature: string | null
+          id: string
+          issued_at: string
+          metadata: Json | null
+          name: string
+          revocable: boolean | null
+          shared_with: Json | null
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          birthdate?: string | null
+          created_at?: string | null
+          credential_type: string
+          did: string
+          email?: string | null
+          expires_at?: string | null
+          guardian_signature?: string | null
+          id?: string
+          issued_at?: string
+          metadata?: Json | null
+          name: string
+          revocable?: boolean | null
+          shared_with?: Json | null
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          birthdate?: string | null
+          created_at?: string | null
+          credential_type?: string
+          did?: string
+          email?: string | null
+          expires_at?: string | null
+          guardian_signature?: string | null
+          id?: string
+          issued_at?: string
+          metadata?: Json | null
+          name?: string
+          revocable?: boolean | null
+          shared_with?: Json | null
+          status?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -168,6 +329,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      emotional_diary: {
+        Row: {
+          audio_url: string | null
+          content: string | null
+          created_at: string | null
+          emotions: Json | null
+          entry_type: string
+          id: string
+          is_private: boolean | null
+          sentiment: string | null
+          sentiment_score: number | null
+          tags: string[] | null
+          updated_at: string | null
+          user_id: string
+          voice_analysis: Json | null
+        }
+        Insert: {
+          audio_url?: string | null
+          content?: string | null
+          created_at?: string | null
+          emotions?: Json | null
+          entry_type?: string
+          id?: string
+          is_private?: boolean | null
+          sentiment?: string | null
+          sentiment_score?: number | null
+          tags?: string[] | null
+          updated_at?: string | null
+          user_id: string
+          voice_analysis?: Json | null
+        }
+        Update: {
+          audio_url?: string | null
+          content?: string | null
+          created_at?: string | null
+          emotions?: Json | null
+          entry_type?: string
+          id?: string
+          is_private?: boolean | null
+          sentiment?: string | null
+          sentiment_score?: number | null
+          tags?: string[] | null
+          updated_at?: string | null
+          user_id?: string
+          voice_analysis?: Json | null
+        }
+        Relationships: []
       }
       entity_purposes: {
         Row: {
@@ -254,6 +463,101 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      guardian_alerts: {
+        Row: {
+          action_taken: string | null
+          alert_type: string
+          created_at: string | null
+          description: string | null
+          guardian_id: string
+          id: string
+          metadata: Json | null
+          resolved: boolean | null
+          resolved_at: string | null
+          severity: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          action_taken?: string | null
+          alert_type: string
+          created_at?: string | null
+          description?: string | null
+          guardian_id: string
+          id?: string
+          metadata?: Json | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          action_taken?: string | null
+          alert_type?: string
+          created_at?: string | null
+          description?: string | null
+          guardian_id?: string
+          id?: string
+          metadata?: Json | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guardian_alerts_guardian_id_fkey"
+            columns: ["guardian_id"]
+            isOneToOne: false
+            referencedRelation: "guardians"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guardians: {
+        Row: {
+          alerts_enabled: boolean | null
+          config: Json | null
+          created_at: string | null
+          guardian_type: string
+          id: string
+          name: string
+          status: string
+          strict_mode: boolean | null
+          trust_score: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          alerts_enabled?: boolean | null
+          config?: Json | null
+          created_at?: string | null
+          guardian_type?: string
+          id?: string
+          name: string
+          status?: string
+          strict_mode?: boolean | null
+          trust_score?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          alerts_enabled?: boolean | null
+          config?: Json | null
+          created_at?: string | null
+          guardian_type?: string
+          id?: string
+          name?: string
+          status?: string
+          strict_mode?: boolean | null
+          trust_score?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       marketplace_listings: {
         Row: {

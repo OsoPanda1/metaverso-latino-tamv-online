@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, LogOut, LayoutDashboard, Sparkles, MessageCircle, Network, Store, Image, Users, Package, ShoppingCart } from "lucide-react";
+import { User, LogOut, LayoutDashboard, Sparkles, MessageCircle, Network, Store, Image, Users, Package, ShoppingCart, Shield, Lock, AlertTriangle, BookHeart } from "lucide-react";
 
 export const Navigation = () => {
   const { user, signOut } = useAuth();
@@ -84,10 +84,27 @@ export const Navigation = () => {
                     <User className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem onClick={() => navigate("/profile")}>
                     <User className="w-4 h-4 mr-2" />
                     Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/id-nvida")}>
+                    <Shield className="w-4 h-4 mr-2" />
+                    ID-NVIDA™
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/privacy")}>
+                    <Lock className="w-4 h-4 mr-2" />
+                    Privacy Panel
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/guardians")}>
+                    <AlertTriangle className="w-4 h-4 mr-2" />
+                    Guardians
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/emotional-diary")}>
+                    <BookHeart className="w-4 h-4 mr-2" />
+                    Emotional Diary
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={signOut} className="text-destructive">
