@@ -39,10 +39,17 @@ const Nexus = () => {
   const [entities, setEntities] = useState<NexusEntity[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [purposeDialogOpen, setPurposeDialogOpen] = useState(false);
+  const [selectedEntity, setSelectedEntity] = useState<NexusEntity | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     entity_type: 'avatar',
     description: '',
+  });
+  const [purposeData, setPurposeData] = useState({
+    purpose_type: '',
+    priority: 5,
+    context: {}
   });
 
   const fetchEntities = async () => {
@@ -105,6 +112,13 @@ const Nexus = () => {
       toast.success('Entity created successfully');
       setDialogOpen(false);
       setFormData({ name: '', entity_type: 'avatar', description: '' });
+
+      // Log transaction
+      await supabase.from('transactional_metadata').insert({
+        user_id: user.id,
+        transaction_type: 'entity_created',
+        payload: { entity_name: formData.name, entity_type: formData.entity_type }
+      });
     }
   };
 
@@ -118,6 +132,25 @@ const Nexus = () => {
     }
   };
 
+  const handleAddPurpose = async () => {
+    if (!selectedEntity || !purposeData.purpose_type) return;
+
+    const { error } = await supabase.from('entity_purposes').insert({
+      entity_id: selectedEntity.id,
+      purpose_type: purposeData.purpose_type,
+      priority: purposeData.priority,
+      context: purposeData.context
+    });
+
+    if (error) {
+      toast.error('Failed to add purpose');
+    } else {
+      toast.success('Purpose added successfully');
+      setPurposeDialogOpen(false);
+      setPurposeData({ purpose_type: '', priority: 5, context: {} });
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -127,7 +160,7 @@ const Nexus = () => {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-4xl font-bold text-gradient mb-2">Nexus Entities</h1>
-              <p className="text-muted-foreground">Manage your digital entities</p>
+              <p className="text-muted-foreground">Manage your semantic digital entities with purpose</p>
             </div>
 
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -219,14 +252,27 @@ const Nexus = () => {
                           {entity.entity_type}
                         </CardDescription>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleDelete(entity.id)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                      <div className="flex gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => {
+                            setSelectedEntity(entity);
+                            setPurposeDialogOpen(true);
+                          }}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDelete(entity.id)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -248,6 +294,40 @@ const Nexus = () => {
               ))}
             </div>
           )}
+
+          <Dialog open={purposeDialogOpen} onOpenChange={setPurposeDialogOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add Purpose to {selectedEntity?.name}</DialogTitle>
+                <DialogDescription>
+                  Define semantic purpose and priority for this entity
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Purpose Type</Label>
+                  <Input
+                    value={purposeData.purpose_type}
+                    onChange={(e) => setPurposeData({ ...purposeData, purpose_type: e.target.value })}
+                    placeholder="e.g., guardian, trader, explorer"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Priority (1-10)</Label>
+                  <Input
+                    type="number"
+                    min="1"
+                    max="10"
+                    value={purposeData.priority}
+                    onChange={(e) => setPurposeData({ ...purposeData, priority: parseInt(e.target.value) })}
+                  />
+                </div>
+                <Button onClick={handleAddPurpose} className="w-full glow-cyan">
+                  Add Purpose
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>

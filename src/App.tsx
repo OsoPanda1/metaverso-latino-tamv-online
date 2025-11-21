@@ -11,6 +11,11 @@ import Dashboard from "./pages/Dashboard";
 import AIChat from "./pages/AIChat";
 import Nexus from "./pages/Nexus";
 import Profile from "./pages/Profile";
+import Store from "./pages/Store";
+import Gallery from "./pages/Gallery";
+import SocialHub from "./pages/SocialHub";
+import Inventory from "./pages/Inventory";
+import Marketplace from "./pages/Marketplace";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -62,6 +67,46 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/store"
+              element={
+                <ProtectedRoute>
+                  <Store />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/gallery"
+              element={
+                <ProtectedRoute>
+                  <Gallery />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/social"
+              element={
+                <ProtectedRoute>
+                  <SocialHub />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/inventory"
+              element={
+                <ProtectedRoute>
+                  <Inventory />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/marketplace"
+              element={
+                <ProtectedRoute>
+                  <Marketplace />
                 </ProtectedRoute>
               }
             />
