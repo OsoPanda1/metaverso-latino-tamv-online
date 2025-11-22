@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, LogOut, LayoutDashboard, Sparkles, MessageCircle, Network, Store, Image, Users, Package, ShoppingCart, Shield, Lock, AlertTriangle, BookHeart } from "lucide-react";
+import { User, LogOut, LayoutDashboard, Sparkles, MessageCircle, Network, Store, Image, Users, Package, ShoppingCart, Shield, Lock, AlertTriangle, BookHeart, GraduationCap, Vote, Trophy, Circle, GitFork, Globe, Coins, Music as MusicIcon, Radio } from "lucide-react";
 
 export const Navigation = () => {
   const { user, signOut } = useAuth();
@@ -74,6 +74,42 @@ export const Navigation = () => {
                   <DropdownMenuItem onClick={() => navigate("/social")}>
                     <Users className="w-4 h-4 mr-2" />
                     Social Hub
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/cells")}>
+                    <Circle className="w-4 h-4 mr-2" />
+                    Cells™
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/forks")}>
+                    <GitFork className="w-4 h-4 mr-2" />
+                    Forks™
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/dreamspaces")}>
+                    <Globe className="w-4 h-4 mr-2" />
+                    DreamSpaces™
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/university")}>
+                    <GraduationCap className="w-4 h-4 mr-2" />
+                    University
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/dao")}>
+                    <Vote className="w-4 h-4 mr-2" />
+                    DAO
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/lottery")}>
+                    <Trophy className="w-4 h-4 mr-2" />
+                    Lottery
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/credits")}>
+                    <Coins className="w-4 h-4 mr-2" />
+                    Credits
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/music")}>
+                    <MusicIcon className="w-4 h-4 mr-2" />
+                    Music
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/lives")}>
+                    <Radio className="w-4 h-4 mr-2" />
+                    Lives
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

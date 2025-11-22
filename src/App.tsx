@@ -20,6 +20,15 @@ import IdNvida from "./pages/IdNvida";
 import Privacy from "./pages/Privacy";
 import Guardians from "./pages/Guardians";
 import EmotionalDiary from "./pages/EmotionalDiary";
+import University from "./pages/University";
+import DAO from "./pages/DAO";
+import Lottery from "./pages/Lottery";
+import Cells from "./pages/Cells";
+import Forks from "./pages/Forks";
+import DreamSpaces from "./pages/DreamSpaces";
+import Credits from "./pages/Credits";
+import Music from "./pages/Music";
+import Lives from "./pages/Lives";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -146,6 +155,16 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            <Route path="/university" element={<ProtectedRoute><University /></ProtectedRoute>} />
+            <Route path="/courses" element={<ProtectedRoute><University /></ProtectedRoute>} />
+            <Route path="/dao" element={<ProtectedRoute><DAO /></ProtectedRoute>} />
+            <Route path="/lottery" element={<ProtectedRoute><Lottery /></ProtectedRoute>} />
+            <Route path="/cells" element={<ProtectedRoute><Cells /></ProtectedRoute>} />
+            <Route path="/forks" element={<ProtectedRoute><Forks /></ProtectedRoute>} />
+            <Route path="/dreamspaces" element={<ProtectedRoute><DreamSpaces /></ProtectedRoute>} />
+            <Route path="/credits" element={<ProtectedRoute><Credits /></ProtectedRoute>} />
+            <Route path="/music" element={<ProtectedRoute><Music /></ProtectedRoute>} />
+            <Route path="/lives" element={<ProtectedRoute><Lives /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
