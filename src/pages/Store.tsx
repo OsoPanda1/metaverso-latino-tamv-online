@@ -9,9 +9,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { ShoppingBag, Plus, ImageIcon, Sparkles, Rocket, Award, Globe } from "lucide-react";
 import { toast } from "sonner";
-import useFileUpload from "@/hooks/useFileUpload";
-import { Badge } from "@/components/ui/Badge";
-import { QuantumLoader } from "@/components/quantum/assets";
+import { useFileUpload } from "@/hooks/useFileUpload";
+import { Badge } from "@/components/ui/badge";
+import { QuantumLoader } from "@/components/quantum/QuantumLoader";
 
 interface DigitalAsset {
   id: string;
@@ -34,7 +34,8 @@ const Store = () => {
     currency: "USD",
     file_url: "",
   });
-  const { files, addFile, removeFile, previewFiles } = useFileUpload();
+
+  const { uploadFile, uploading } = useFileUpload();
 
   const fetchAssets = async () => {
     const { data, error } = await supabase
@@ -55,11 +56,15 @@ const Store = () => {
     fetchAssets();
   }, []);
 
-  useEffect(() => {
-    if (files.length > 0 && previewFiles.length > 0) {
-      setForm((prev) => ({ ...prev, file_url: previewFiles[0] }));
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const url = await uploadFile(file, 'assets');
+    if (url) {
+      setForm((prev) => ({ ...prev, file_url: url }));
     }
-  }, [previewFiles]);
+  };
 
   const handleCreate = async () => {
     if (!user) {
@@ -100,60 +105,98 @@ const Store = () => {
   };
 
   return (
-    <div className="min-h-screen quantum-bg">
+    <div className="min-h-screen">
       <Navigation />
       <div className="pt-24 pb-12 px-4">
         <div className="container mx-auto max-w-7xl">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-4xl font-bold text-gradient mb-2 flex items-center gap-2"><ShoppingBag className="w-8 h-8 text-primary" /> Quantum TAMV Store</h1>
-              <p className="text-muted-foreground">Activos digitales, regalos XR, avatares IA, arte Web4 y experiencias de la civilización Nexus.</p>
+              <h1 className="text-4xl font-bold text-gradient mb-2 flex items-center gap-2">
+                <ShoppingBag className="w-8 h-8 text-primary" /> Quantum TAMV Store
+              </h1>
+              <p className="text-muted-foreground">
+                Activos digitales, regalos XR, avatares IA, arte Web4 y experiencias de la civilización Nexus.
+              </p>
             </div>
             <div className="flex gap-2">
-              <Badge variant="quantum" className="px-3 py-2"><Sparkles className="w-4 h-4 mr-2" />XR Gift</Badge>
-              <Badge variant="dashboard" className="px-3 py-2"><Rocket className="w-4 h-4 mr-2" />Metaverse</Badge>
-              <Badge variant="secondary" className="px-3 py-2"><Award className="w-4 h-4 mr-2" />NFT/Art</Badge>
-              <Badge variant="outline" className="px-3 py-2"><Globe className="w-4 h-4 mr-2" />All Digital</Badge>
+              <Badge variant="default" className="px-3 py-2">
+                <Sparkles className="w-4 h-4 mr-2" />
+                XR Gift
+              </Badge>
+              <Badge variant="secondary" className="px-3 py-2">
+                <Rocket className="w-4 h-4 mr-2" />
+                Metaverse
+              </Badge>
             </div>
           </div>
 
           {user && (
-            <Card className="mb-10 border-primary/30 glow-cyan animate-enter">
+            <Card className="mb-10 border-primary/30 animate-enter">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2"><Plus className="w-4 h-4 text-primary" />Publicar nuevo activo digital</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Plus className="w-4 h-4 text-primary" />
+                  Publicar nuevo activo digital
+                </CardTitle>
                 <CardDescription>Crea producto o regalo virtual para la tienda TAMV.</CardDescription>
               </CardHeader>
               <CardContent className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div className="space-y-1">
                     <Label>Nombre</Label>
-                    <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Avatar IA, XR Space, NFT, skin..." />
+                    <Input
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      placeholder="Avatar IA, XR Space, NFT, skin..."
+                    />
                   </div>
                   <div className="space-y-1">
                     <Label>Descripción</Label>
-                    <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Características del regalo digital" />
+                    <Textarea
+                      value={form.description}
+                      onChange={(e) => setForm({ ...form, description: e.target.value })}
+                      placeholder="Características del regalo digital"
+                    />
                   </div>
                   <div className="space-y-1">
-                    <Label>Vista previa, arte o asset (arrastra o selecciona)</Label>
-                    <input type="file" accept="image/*,audio/*,video/*" className="hidden" id="upload-asset" onChange={e => addFile(e.target.files)} />
-                    <Button as="label" htmlFor="upload-asset" className="w-full" variant="ghost"><ImageIcon className="w-5 h-5" /></Button>
-                    <div className="flex gap-2 pt-2">
-                      {previewFiles.map((url, i) => (<img key={i} src={url} alt="Preview" className="w-16 h-16 rounded-lg shadow" />))}
-                    </div>
+                    <Label>Vista previa del asset</Label>
+                    <input
+                      type="file"
+                      accept="image/*,audio/*,video/*"
+                      className="hidden"
+                      id="upload-asset"
+                      onChange={handleFileUpload}
+                    />
+                    <label htmlFor="upload-asset">
+                      <Button variant="ghost" className="w-full cursor-pointer" disabled={uploading} asChild>
+                        <span>
+                          <ImageIcon className="w-5 h-5" />
+                          {uploading ? 'Uploading...' : 'Select file'}
+                        </span>
+                      </Button>
+                    </label>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div className="flex gap-3">
                     <div className="flex-1 space-y-1">
                       <Label>Precio</Label>
-                      <Input type="number" min="0" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} placeholder="10" />
+                      <Input
+                        type="number"
+                        min="0"
+                        value={form.price}
+                        onChange={(e) => setForm({ ...form, price: e.target.value })}
+                        placeholder="10"
+                      />
                     </div>
                     <div className="w-28 space-y-1">
                       <Label>Moneda</Label>
-                      <Input value={form.currency} onChange={(e) => setForm({ ...form, currency: e.target.value.toUpperCase() })} />
+                      <Input
+                        value={form.currency}
+                        onChange={(e) => setForm({ ...form, currency: e.target.value.toUpperCase() })}
+                      />
                     </div>
                   </div>
-                  <Button onClick={handleCreate} disabled={creating} className="w-full glow-cyan hover-scale">
+                  <Button onClick={handleCreate} disabled={creating} className="w-full">
                     {creating ? "Publicando..." : "Publicar en la tienda"}
                   </Button>
                 </div>
@@ -161,11 +204,18 @@ const Store = () => {
             </Card>
           )}
 
-          <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2"><ShoppingBag className="w-5 h-5 text-primary" />Productos y regalos virtuales</h2>
+          <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+            <ShoppingBag className="w-5 h-5 text-primary" />
+            Productos y regalos virtuales
+          </h2>
 
-          {loading ? <QuantumLoader visible /> : assets.length === 0 ? (
+          {loading ? (
+            <QuantumLoader />
+          ) : assets.length === 0 ? (
             <Card className="border-border/50">
-              <CardContent className="py-10 text-center text-muted-foreground">Aún no hay productos públicos en la tienda.</CardContent>
+              <CardContent className="py-10 text-center text-muted-foreground">
+                Aún no hay productos públicos en la tienda.
+              </CardContent>
             </Card>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -174,19 +224,24 @@ const Store = () => {
                 const currency = asset.metadata?.currency || "USD";
                 const description = asset.metadata?.description || "Sin descripción";
                 return (
-                  <Card key={asset.id} className="border-border/60 hover:border-primary/60 hover-scale">
+                  <Card key={asset.id} className="border-border/60">
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2"><ImageIcon className="w-4 h-4 text-primary" />{asset.name}</CardTitle>
+                      <CardTitle className="flex items-center gap-2">
+                        <ImageIcon className="w-4 h-4 text-primary" />
+                        {asset.name}
+                      </CardTitle>
                       <CardDescription>{description}</CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-3 items-start justify-between">
                       <div className="text-lg font-semibold">{price ? `${price} ${currency}` : "Sin precio"}</div>
                       {asset.file_url && (
-                        <Button asChild variant="outline" className="hover-scale">
-                          <a href={asset.file_url} target="_blank" rel="noreferrer">Ver asset</a>
-                        </Button>
+                        <a href={asset.file_url} target="_blank" rel="noreferrer">
+                          <Button variant="outline">Ver asset</Button>
+                        </a>
                       )}
-                      <Badge variant="dashboard" className="px-2 py-1">TAMV Gift</Badge>
+                      <Badge variant="secondary" className="px-2 py-1">
+                        TAMV Gift
+                      </Badge>
                     </CardContent>
                   </Card>
                 );
