@@ -67,6 +67,83 @@ export type Database = {
           },
         ]
       }
+      admin_permissions: {
+        Row: {
+          granted_at: string | null
+          granted_by: string | null
+          id: string
+          is_active: boolean | null
+          permissions: Json | null
+          revoked_at: string | null
+          role: string | null
+          user_id: string
+        }
+        Insert: {
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          permissions?: Json | null
+          revoked_at?: string | null
+          role?: string | null
+          user_id: string
+        }
+        Update: {
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          permissions?: Json | null
+          revoked_at?: string | null
+          role?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_chat_history: {
+        Row: {
+          content: string
+          created_at: string | null
+          emotional_analysis: Json | null
+          eoct_filters_applied: Json | null
+          id: string
+          quantum_layer: number | null
+          role: string
+          session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          emotional_analysis?: Json | null
+          eoct_filters_applied?: Json | null
+          id?: string
+          quantum_layer?: number | null
+          role: string
+          session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          emotional_analysis?: Json | null
+          eoct_filters_applied?: Json | null
+          id?: string
+          quantum_layer?: number | null
+          role?: string
+          session_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_chat_history_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "isabella_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_context_memory: {
         Row: {
           context_key: string
@@ -150,6 +227,109 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      auction_bids: {
+        Row: {
+          auction_id: string | null
+          auto_bid: boolean | null
+          bid_amount: number
+          bidder_id: string
+          created_at: string | null
+          id: string
+          max_bid: number | null
+        }
+        Insert: {
+          auction_id?: string | null
+          auto_bid?: boolean | null
+          bid_amount: number
+          bidder_id: string
+          created_at?: string | null
+          id?: string
+          max_bid?: number | null
+        }
+        Update: {
+          auction_id?: string | null
+          auto_bid?: boolean | null
+          bid_amount?: number
+          bidder_id?: string
+          created_at?: string | null
+          id?: string
+          max_bid?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auction_bids_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      auctions: {
+        Row: {
+          asset_id: string | null
+          bid_count: number | null
+          buyout_price: number | null
+          created_at: string | null
+          current_price: number | null
+          description: string | null
+          end_time: string
+          highest_bidder_id: string | null
+          id: string
+          metadata: Json | null
+          seller_id: string
+          start_time: string
+          starting_price: number
+          status: string | null
+          title: string
+          winner_id: string | null
+        }
+        Insert: {
+          asset_id?: string | null
+          bid_count?: number | null
+          buyout_price?: number | null
+          created_at?: string | null
+          current_price?: number | null
+          description?: string | null
+          end_time: string
+          highest_bidder_id?: string | null
+          id?: string
+          metadata?: Json | null
+          seller_id: string
+          start_time: string
+          starting_price: number
+          status?: string | null
+          title: string
+          winner_id?: string | null
+        }
+        Update: {
+          asset_id?: string | null
+          bid_count?: number | null
+          buyout_price?: number | null
+          created_at?: string | null
+          current_price?: number | null
+          description?: string | null
+          end_time?: string
+          highest_bidder_id?: string | null
+          id?: string
+          metadata?: Json | null
+          seller_id?: string
+          start_time?: string
+          starting_price?: number
+          status?: string | null
+          title?: string
+          winner_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auctions_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "digital_assets"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       bookpi_entries: {
         Row: {
@@ -238,6 +418,101 @@ export type Database = {
           purpose?: string | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          attachments: Json | null
+          content: string
+          created_at: string | null
+          deleted_at: string | null
+          edited_at: string | null
+          emotional_vector: Json | null
+          id: string
+          is_encrypted: boolean | null
+          message_type: string | null
+          receiver_id: string | null
+          room_id: string | null
+          sender_id: string
+        }
+        Insert: {
+          attachments?: Json | null
+          content: string
+          created_at?: string | null
+          deleted_at?: string | null
+          edited_at?: string | null
+          emotional_vector?: Json | null
+          id?: string
+          is_encrypted?: boolean | null
+          message_type?: string | null
+          receiver_id?: string | null
+          room_id?: string | null
+          sender_id: string
+        }
+        Update: {
+          attachments?: Json | null
+          content?: string
+          created_at?: string | null
+          deleted_at?: string | null
+          edited_at?: string | null
+          emotional_vector?: Json | null
+          id?: string
+          is_encrypted?: boolean | null
+          message_type?: string | null
+          receiver_id?: string | null
+          room_id?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_rooms: {
+        Row: {
+          created_at: string | null
+          created_by: string
+          current_participants: number | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          is_encrypted: boolean | null
+          max_participants: number | null
+          metadata: Json | null
+          name: string
+          room_type: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by: string
+          current_participants?: number | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_encrypted?: boolean | null
+          max_participants?: number | null
+          metadata?: Json | null
+          name: string
+          room_type?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string
+          current_participants?: number | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_encrypted?: boolean | null
+          max_participants?: number | null
+          metadata?: Json | null
+          name?: string
+          room_type?: string | null
         }
         Relationships: []
       }
@@ -974,6 +1249,64 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      gift_transactions: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          gift_id: string | null
+          id: string
+          message: string | null
+          post_id: string | null
+          receiver_id: string
+          sender_id: string
+          stream_id: string | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          gift_id?: string | null
+          id?: string
+          message?: string | null
+          post_id?: string | null
+          receiver_id: string
+          sender_id: string
+          stream_id?: string | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          gift_id?: string | null
+          id?: string
+          message?: string | null
+          post_id?: string | null
+          receiver_id?: string
+          sender_id?: string
+          stream_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gift_transactions_gift_id_fkey"
+            columns: ["gift_id"]
+            isOneToOne: false
+            referencedRelation: "virtual_gifts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_transactions_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_transactions_stream_id_fkey"
+            columns: ["stream_id"]
+            isOneToOne: false
+            referencedRelation: "live_streams"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       guardian_alerts: {
         Row: {
@@ -1737,6 +2070,33 @@ export type Database = {
           },
         ]
       }
+      user_analytics: {
+        Row: {
+          id: string
+          metadata: Json | null
+          metric_type: string
+          metric_value: number
+          recorded_at: string | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          metadata?: Json | null
+          metric_type: string
+          metric_value: number
+          recorded_at?: string | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          metadata?: Json | null
+          metric_type?: string
+          metric_value?: number
+          recorded_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -1754,6 +2114,102 @@ export type Database = {
           created_at?: string | null
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      virtual_gifts: {
+        Row: {
+          animation_url: string | null
+          created_at: string | null
+          description: string | null
+          effects: Json | null
+          gift_type: string
+          icon_url: string | null
+          id: string
+          is_available: boolean | null
+          name: string
+          price_credits: number
+          rarity: string | null
+        }
+        Insert: {
+          animation_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          effects?: Json | null
+          gift_type: string
+          icon_url?: string | null
+          id?: string
+          is_available?: boolean | null
+          name: string
+          price_credits: number
+          rarity?: string | null
+        }
+        Update: {
+          animation_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          effects?: Json | null
+          gift_type?: string
+          icon_url?: string | null
+          id?: string
+          is_available?: boolean | null
+          name?: string
+          price_credits?: number
+          rarity?: string | null
+        }
+        Relationships: []
+      }
+      virtual_pets: {
+        Row: {
+          abilities: Json | null
+          appearance: Json | null
+          created_at: string | null
+          emotional_bond: Json | null
+          energy: number | null
+          experience: number | null
+          happiness: number | null
+          health: number | null
+          id: string
+          is_active: boolean | null
+          last_interaction: string | null
+          level: number | null
+          name: string
+          pet_type: string
+          user_id: string
+        }
+        Insert: {
+          abilities?: Json | null
+          appearance?: Json | null
+          created_at?: string | null
+          emotional_bond?: Json | null
+          energy?: number | null
+          experience?: number | null
+          happiness?: number | null
+          health?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_interaction?: string | null
+          level?: number | null
+          name: string
+          pet_type: string
+          user_id: string
+        }
+        Update: {
+          abilities?: Json | null
+          appearance?: Json | null
+          created_at?: string | null
+          emotional_bond?: Json | null
+          energy?: number | null
+          experience?: number | null
+          happiness?: number | null
+          health?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_interaction?: string | null
+          level?: number | null
+          name?: string
+          pet_type?: string
           user_id?: string
         }
         Relationships: []
