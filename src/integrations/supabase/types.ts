@@ -1593,6 +1593,80 @@ export type Database = {
           },
         ]
       }
+      group_members: {
+        Row: {
+          group_id: string | null
+          id: string
+          joined_at: string | null
+          role: string | null
+          user_id: string | null
+        }
+        Insert: {
+          group_id?: string | null
+          id?: string
+          joined_at?: string | null
+          role?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          group_id?: string | null
+          id?: string
+          joined_at?: string | null
+          role?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      groups: {
+        Row: {
+          category: string | null
+          cover_image_url: string | null
+          created_at: string | null
+          creator_id: string | null
+          description: string | null
+          group_type: string | null
+          id: string
+          member_count: number | null
+          name: string
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          creator_id?: string | null
+          description?: string | null
+          group_type?: string | null
+          id?: string
+          member_count?: number | null
+          name: string
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          creator_id?: string | null
+          description?: string | null
+          group_type?: string | null
+          id?: string
+          member_count?: number | null
+          name?: string
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       guardian_alerts: {
         Row: {
           action_taken: string | null
@@ -2063,6 +2137,45 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          action_url: string | null
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string | null
+          notification_type: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          title: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_url?: string | null
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string | null
+          notification_type: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_url?: string | null
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string | null
+          notification_type?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       phoenix_events: {
         Row: {
           affected_entity_id: string | null
@@ -2131,19 +2244,55 @@ export type Database = {
           },
         ]
       }
+      post_shares: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string | null
+          shared_to: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          shared_to?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          shared_to?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_shares_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           comments_count: number | null
           content: string
           created_at: string | null
           emotional_vector: Json | null
+          group_id: string | null
           id: string
           is_monetized: boolean | null
           likes_count: number | null
+          media_type: string | null
           media_urls: Json | null
+          mentioned_users: string[] | null
           post_type: string
           price_credits: number | null
           shares_count: number | null
+          tags: string[] | null
           user_id: string
           visibility: string
         }
@@ -2152,13 +2301,17 @@ export type Database = {
           content: string
           created_at?: string | null
           emotional_vector?: Json | null
+          group_id?: string | null
           id?: string
           is_monetized?: boolean | null
           likes_count?: number | null
+          media_type?: string | null
           media_urls?: Json | null
+          mentioned_users?: string[] | null
           post_type?: string
           price_credits?: number | null
           shares_count?: number | null
+          tags?: string[] | null
           user_id: string
           visibility?: string
         }
@@ -2167,17 +2320,29 @@ export type Database = {
           content?: string
           created_at?: string | null
           emotional_vector?: Json | null
+          group_id?: string | null
           id?: string
           is_monetized?: boolean | null
           likes_count?: number | null
+          media_type?: string | null
           media_urls?: Json | null
+          mentioned_users?: string[] | null
           post_type?: string
           price_credits?: number | null
           shares_count?: number | null
+          tags?: string[] | null
           user_id?: string
           visibility?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "posts_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -2544,6 +2709,36 @@ export type Database = {
           },
         ]
       }
+      user_activity: {
+        Row: {
+          activity_data: Json | null
+          activity_type: string
+          created_at: string | null
+          id: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          activity_data?: Json | null
+          activity_type: string
+          created_at?: string | null
+          id?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          activity_data?: Json | null
+          activity_type?: string
+          created_at?: string | null
+          id?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_analytics: {
         Row: {
           id: string
@@ -2608,6 +2803,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          cover_image_url: string | null
+          created_at: string | null
+          display_name: string | null
+          id: string
+          interests: string[] | null
+          location: string | null
+          membership_level: string | null
+          social_links: Json | null
+          total_followers: number | null
+          total_following: number | null
+          total_posts: number | null
+          updated_at: string | null
+          username: string | null
+          verified: boolean | null
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id: string
+          interests?: string[] | null
+          location?: string | null
+          membership_level?: string | null
+          social_links?: Json | null
+          total_followers?: number | null
+          total_following?: number | null
+          total_posts?: number | null
+          updated_at?: string | null
+          username?: string | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string
+          interests?: string[] | null
+          location?: string | null
+          membership_level?: string | null
+          social_links?: Json | null
+          total_followers?: number | null
+          total_following?: number | null
+          total_posts?: number | null
+          updated_at?: string | null
+          username?: string | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Relationships: []
       }
       user_recommendations: {
         Row: {
