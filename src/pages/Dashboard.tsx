@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigation } from '@/components/Navigation';
+import { MatrixBackground } from '@/components/MatrixBackground';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
@@ -70,95 +71,78 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen">
-      <Navigation />
+    <>
+      <MatrixBackground />
+      <div className="min-h-screen">
+        <Navigation />
+        <div className="pt-24 pb-12 px-4">
+          <div className="container mx-auto max-w-7xl">
+            <div className="mb-8">
+              <h1 className="text-4xl font-bold text-gradient mb-2">Dashboard</h1>
+              <p className="text-muted-foreground">Welcome back to your digital nexus</p>
+            </div>
 
-      <div className="pt-24 pb-12 px-4">
-        <div className="container mx-auto max-w-7xl">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gradient mb-2">Dashboard</h1>
-            <p className="text-muted-foreground">Welcome back to your digital nexus</p>
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              {statCards.map((stat, index) => (
+                <Card key={index} className="border-border/50 hover:border-primary/50 transition-all glow-cyan">
+                  <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                    <stat.icon className={`w-4 h-4 ${stat.color}`} />
+                  </CardHeader>
+                  <CardContent>
+                    <div className={`text-3xl font-bold ${stat.color}`}>
+                      {loading ? '...' : stat.value}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">{stat.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <Card className="border-primary/30 glow-cyan mb-8 animate-enter">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-primary" />
+                  Acciones rápidas
+                </CardTitle>
+                <CardDescription>Accede a los módulos clave del Nexus.</CardDescription>
+              </CardHeader>
+              <CardContent className="grid md:grid-cols-4 gap-4">
+                <Button onClick={() => navigate("/ai-chat")} className="h-auto py-6 flex flex-col items-center gap-2 glow-cyan hover-scale">
+                  <Brain className="w-6 h-6" />
+                  <span>Isabella</span>
+                </Button>
+                <Button onClick={() => navigate("/artworks")} variant="outline" className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50 hover-scale">
+                  <Sparkles className="w-6 h-6" />
+                  <span>Artworks</span>
+                </Button>
+                <Button onClick={() => navigate("/metrics")} variant="outline" className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50 hover-scale">
+                  <Activity className="w-6 h-6" />
+                  <span>Métricas</span>
+                </Button>
+                <Button onClick={() => navigate("/gallery")} variant="outline" className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50 hover-scale">
+                  <Network className="w-6 h-6" />
+                  <span>Galería</span>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-border/50">
+              <CardHeader>
+                <CardTitle>Sistema TAMV Activo</CardTitle>
+                <CardDescription>ML, NFT, Pagos y Monitoreo funcionando</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8 text-muted-foreground">
+                  <Activity className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                  <p>Visita /artworks para ML recommendations y /metrics para monitoreo en tiempo real</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-
-          {/* Stats Grid */}
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            {statCards.map((stat, index) => (
-              <Card key={index} className="border-border/50 hover:border-primary/50 transition-all glow-cyan">
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-                  <stat.icon className={`w-4 h-4 ${stat.color}`} />
-                </CardHeader>
-                <CardContent>
-                  <div className={`text-3xl font-bold ${stat.color}`}>
-                    {loading ? '...' : stat.value}
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">{stat.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Quick Actions */}
-          <Card className="border-primary/30 glow-cyan mb-8 animate-enter">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Activity className="w-5 h-5 text-primary" />
-                Acciones rápidas
-              </CardTitle>
-              <CardDescription>Accede a los módulos clave del Nexus.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid md:grid-cols-4 gap-4">
-              <Button
-                onClick={() => navigate("/ai-chat")}
-                className="h-auto py-6 flex flex-col items-center gap-2 glow-cyan hover-scale"
-              >
-                <Brain className="w-6 h-6" />
-                <span>Isabella</span>
-              </Button>
-              <Button
-                onClick={() => navigate("/nexus")}
-                variant="outline"
-                className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50 hover-scale"
-              >
-                <Network className="w-6 h-6" />
-                <span>Entidades</span>
-              </Button>
-              <Button
-                onClick={() => navigate("/store")}
-                variant="outline"
-                className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50 hover-scale"
-              >
-                <Sparkles className="w-6 h-6" />
-                <span>Tienda</span>
-              </Button>
-              <Button
-                onClick={() => navigate("/gallery")}
-                variant="outline"
-                className="h-auto py-6 flex flex-col items-center gap-2 border-primary/50 hover-scale"
-              >
-                <Sparkles className="w-6 h-6" />
-                <span>Galería</span>
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Recent Activity */}
-          <Card className="border-border/50">
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Your latest actions in the nexus</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-8 text-muted-foreground">
-                <Activity className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>No recent activity yet. Start by creating your first entity or chatting with AI!</p>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

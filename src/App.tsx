@@ -14,6 +14,8 @@ import Profile from "./pages/Profile";
 import Store from "./pages/Store";
 import Gallery from "./pages/Gallery";
 import SocialHub from "./pages/SocialHub";
+import Artworks from "./pages/Artworks";
+import SystemMetrics from "./pages/SystemMetrics";
 import Inventory from "./pages/Inventory";
 import Marketplace from "./pages/Marketplace";
 import IdNvida from "./pages/IdNvida";
@@ -163,9 +165,11 @@ const App = () => (
             <Route path="/forks" element={<ProtectedRoute><Forks /></ProtectedRoute>} />
             <Route path="/dreamspaces" element={<ProtectedRoute><DreamSpaces /></ProtectedRoute>} />
             <Route path="/credits" element={<ProtectedRoute><Credits /></ProtectedRoute>} />
-            <Route path="/music" element={<ProtectedRoute><Music /></ProtectedRoute>} />
-            <Route path="/lives" element={<ProtectedRoute><Lives /></ProtectedRoute>} />
-            <Route path="*" element={<NotFound />} />
+              <Route path="/music" element={<ProtectedRoute><Music /></ProtectedRoute>} />
+              <Route path="/lives" element={<ProtectedRoute><Lives /></ProtectedRoute>} />
+              <Route path="/artworks" element={<Artworks />} />
+              <Route path="/metrics" element={<ProtectedRoute><SystemMetrics /></ProtectedRoute>} />
+              <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

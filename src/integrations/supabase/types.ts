@@ -228,6 +228,172 @@ export type Database = {
         }
         Relationships: []
       }
+      artists: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          id: string
+          nft_wallet_address: string | null
+          portfolio_url: string | null
+          reputation_score: number | null
+          total_sales: number | null
+          updated_at: string | null
+          user_id: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          id?: string
+          nft_wallet_address?: string | null
+          portfolio_url?: string | null
+          reputation_score?: number | null
+          total_sales?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          id?: string
+          nft_wallet_address?: string | null
+          portfolio_url?: string | null
+          reputation_score?: number | null
+          total_sales?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
+      artwork_versions: {
+        Row: {
+          artwork_id: string | null
+          change_type: string | null
+          changed_by: string | null
+          diff: Json | null
+          hash: string | null
+          id: string
+          new_state: Json | null
+          prev_state: Json | null
+          timestamp: string | null
+          version_number: number
+        }
+        Insert: {
+          artwork_id?: string | null
+          change_type?: string | null
+          changed_by?: string | null
+          diff?: Json | null
+          hash?: string | null
+          id?: string
+          new_state?: Json | null
+          prev_state?: Json | null
+          timestamp?: string | null
+          version_number: number
+        }
+        Update: {
+          artwork_id?: string | null
+          change_type?: string | null
+          changed_by?: string | null
+          diff?: Json | null
+          hash?: string | null
+          id?: string
+          new_state?: Json | null
+          prev_state?: Json | null
+          timestamp?: string | null
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artwork_versions_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "artworks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      artworks: {
+        Row: {
+          artist_id: string | null
+          blockchain_hash: string | null
+          created_at: string | null
+          currency: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          likes_count: number | null
+          metadata: Json | null
+          nft_contract_address: string | null
+          nft_token_id: string | null
+          owner_id: string | null
+          price: number | null
+          rarity_score: number | null
+          sales_count: number | null
+          status: string | null
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string | null
+          views_count: number | null
+        }
+        Insert: {
+          artist_id?: string | null
+          blockchain_hash?: string | null
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          likes_count?: number | null
+          metadata?: Json | null
+          nft_contract_address?: string | null
+          nft_token_id?: string | null
+          owner_id?: string | null
+          price?: number | null
+          rarity_score?: number | null
+          sales_count?: number | null
+          status?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string | null
+          views_count?: number | null
+        }
+        Update: {
+          artist_id?: string | null
+          blockchain_hash?: string | null
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          likes_count?: number | null
+          metadata?: Json | null
+          nft_contract_address?: string | null
+          nft_token_id?: string | null
+          owner_id?: string | null
+          price?: number | null
+          rarity_score?: number | null
+          sales_count?: number | null
+          status?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string | null
+          views_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artworks_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       auction_bids: {
         Row: {
           auction_id: string | null
@@ -1250,6 +1416,125 @@ export type Database = {
         }
         Relationships: []
       }
+      fraud_alerts: {
+        Row: {
+          alert_type: string | null
+          anomaly_score: number | null
+          created_at: string | null
+          details: Json | null
+          id: string
+          resolved: boolean | null
+          severity: string | null
+          transaction_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          alert_type?: string | null
+          anomaly_score?: number | null
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          resolved?: boolean | null
+          severity?: string | null
+          transaction_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          alert_type?: string | null
+          anomaly_score?: number | null
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          resolved?: boolean | null
+          severity?: string | null
+          transaction_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fraud_alerts_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      galleries: {
+        Row: {
+          cover_image_url: string | null
+          created_at: string | null
+          curator_id: string | null
+          description: string | null
+          featured: boolean | null
+          id: string
+          is_public: boolean | null
+          metadata: Json | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          cover_image_url?: string | null
+          created_at?: string | null
+          curator_id?: string | null
+          description?: string | null
+          featured?: boolean | null
+          id?: string
+          is_public?: boolean | null
+          metadata?: Json | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          cover_image_url?: string | null
+          created_at?: string | null
+          curator_id?: string | null
+          description?: string | null
+          featured?: boolean | null
+          id?: string
+          is_public?: boolean | null
+          metadata?: Json | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      gallery_artworks: {
+        Row: {
+          added_at: string | null
+          artwork_id: string
+          gallery_id: string
+          position: number | null
+        }
+        Insert: {
+          added_at?: string | null
+          artwork_id: string
+          gallery_id: string
+          position?: number | null
+        }
+        Update: {
+          added_at?: string | null
+          artwork_id?: string
+          gallery_id?: string
+          position?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gallery_artworks_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "artworks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gallery_artworks_gallery_id_fkey"
+            columns: ["gallery_id"]
+            isOneToOne: false
+            referencedRelation: "galleries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       gift_transactions: {
         Row: {
           amount: number | null
@@ -1728,6 +2013,56 @@ export type Database = {
         }
         Relationships: []
       }
+      nft_certificates: {
+        Row: {
+          artwork_id: string | null
+          blockchain: string | null
+          contract_address: string
+          id: string
+          last_transfer_at: string | null
+          metadata_uri: string | null
+          mint_tx_hash: string | null
+          minted_at: string | null
+          owner_wallet: string | null
+          token_id: string
+          verified: boolean | null
+        }
+        Insert: {
+          artwork_id?: string | null
+          blockchain?: string | null
+          contract_address: string
+          id?: string
+          last_transfer_at?: string | null
+          metadata_uri?: string | null
+          mint_tx_hash?: string | null
+          minted_at?: string | null
+          owner_wallet?: string | null
+          token_id: string
+          verified?: boolean | null
+        }
+        Update: {
+          artwork_id?: string | null
+          blockchain?: string | null
+          contract_address?: string
+          id?: string
+          last_transfer_at?: string | null
+          metadata_uri?: string | null
+          mint_tx_hash?: string | null
+          minted_at?: string | null
+          owner_wallet?: string | null
+          token_id?: string
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nft_certificates_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "artworks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       phoenix_events: {
         Row: {
           affected_entity_id: string | null
@@ -1948,6 +2283,56 @@ export type Database = {
         }
         Relationships: []
       }
+      store_products: {
+        Row: {
+          artwork_id: string | null
+          available: boolean | null
+          created_at: string | null
+          currency: string | null
+          discount_percentage: number | null
+          dynamic_price: number | null
+          id: string
+          metadata: Json | null
+          price: number
+          stock_quantity: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          artwork_id?: string | null
+          available?: boolean | null
+          created_at?: string | null
+          currency?: string | null
+          discount_percentage?: number | null
+          dynamic_price?: number | null
+          id?: string
+          metadata?: Json | null
+          price: number
+          stock_quantity?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          artwork_id?: string | null
+          available?: boolean | null
+          created_at?: string | null
+          currency?: string | null
+          discount_percentage?: number | null
+          dynamic_price?: number | null
+          id?: string
+          metadata?: Json | null
+          price?: number
+          stock_quantity?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "store_products_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "artworks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stream_gifts: {
         Row: {
           created_at: string | null
@@ -1985,6 +2370,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      system_metrics: {
+        Row: {
+          id: string
+          metadata: Json | null
+          metric_name: string
+          metric_type: string | null
+          metric_value: number | null
+          recorded_at: string | null
+        }
+        Insert: {
+          id?: string
+          metadata?: Json | null
+          metric_name: string
+          metric_type?: string | null
+          metric_value?: number | null
+          recorded_at?: string | null
+        }
+        Update: {
+          id?: string
+          metadata?: Json | null
+          metric_name?: string
+          metric_type?: string | null
+          metric_value?: number | null
+          recorded_at?: string | null
+        }
+        Relationships: []
       }
       tamv_wallets: {
         Row: {
@@ -2070,6 +2482,68 @@ export type Database = {
           },
         ]
       }
+      transactions: {
+        Row: {
+          amount: number
+          artwork_id: string | null
+          buyer_id: string | null
+          crypto_tx_hash: string | null
+          crypto_wallet_from: string | null
+          crypto_wallet_to: string | null
+          currency: string | null
+          id: string
+          metadata: Json | null
+          payment_gateway: string | null
+          payment_method: string | null
+          seller_id: string | null
+          status: string | null
+          stripe_payment_id: string | null
+          timestamp: string | null
+        }
+        Insert: {
+          amount: number
+          artwork_id?: string | null
+          buyer_id?: string | null
+          crypto_tx_hash?: string | null
+          crypto_wallet_from?: string | null
+          crypto_wallet_to?: string | null
+          currency?: string | null
+          id?: string
+          metadata?: Json | null
+          payment_gateway?: string | null
+          payment_method?: string | null
+          seller_id?: string | null
+          status?: string | null
+          stripe_payment_id?: string | null
+          timestamp?: string | null
+        }
+        Update: {
+          amount?: number
+          artwork_id?: string | null
+          buyer_id?: string | null
+          crypto_tx_hash?: string | null
+          crypto_wallet_from?: string | null
+          crypto_wallet_to?: string | null
+          currency?: string | null
+          id?: string
+          metadata?: Json | null
+          payment_gateway?: string | null
+          payment_method?: string | null
+          seller_id?: string | null
+          status?: string | null
+          stripe_payment_id?: string | null
+          timestamp?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "artworks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_analytics: {
         Row: {
           id: string
@@ -2096,6 +2570,82 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_interactions: {
+        Row: {
+          artwork_id: string | null
+          duration_seconds: number | null
+          id: string
+          interaction_type: string | null
+          metadata: Json | null
+          timestamp: string | null
+          user_id: string | null
+        }
+        Insert: {
+          artwork_id?: string | null
+          duration_seconds?: number | null
+          id?: string
+          interaction_type?: string | null
+          metadata?: Json | null
+          timestamp?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          artwork_id?: string | null
+          duration_seconds?: number | null
+          id?: string
+          interaction_type?: string | null
+          metadata?: Json | null
+          timestamp?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_interactions_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "artworks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_recommendations: {
+        Row: {
+          algorithm_version: string | null
+          artwork_id: string | null
+          created_at: string | null
+          id: string
+          reason: string | null
+          score: number | null
+          user_id: string | null
+        }
+        Insert: {
+          algorithm_version?: string | null
+          artwork_id?: string | null
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          score?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          algorithm_version?: string | null
+          artwork_id?: string | null
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          score?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_recommendations_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "artworks"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
