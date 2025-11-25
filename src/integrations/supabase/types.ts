@@ -1273,6 +1273,45 @@ export type Database = {
         }
         Relationships: []
       }
+      entity_logs: {
+        Row: {
+          action: string
+          actor_id: string | null
+          bookpi_hash: string
+          entity_id: string
+          entity_type: string
+          id: string
+          metadata: Json | null
+          new_state: Json | null
+          prev_state: Json | null
+          timestamp: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          bookpi_hash: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          metadata?: Json | null
+          new_state?: Json | null
+          prev_state?: Json | null
+          timestamp?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          bookpi_hash?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          metadata?: Json | null
+          new_state?: Json | null
+          prev_state?: Json | null
+          timestamp?: string | null
+        }
+        Relationships: []
+      }
       entity_purposes: {
         Row: {
           context: Json | null
@@ -3024,6 +3063,40 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_perform_action: {
+        Args: {
+          p_action: string
+          p_resource_id?: string
+          p_resource_type: string
+          p_user_id: string
+        }
+        Returns: boolean
+      }
+      create_audit_log: {
+        Args: {
+          p_action: string
+          p_entity_id: string
+          p_entity_type: string
+          p_metadata?: Json
+          p_new_state?: Json
+          p_prev_state?: Json
+        }
+        Returns: string
+      }
+      get_security_metrics: {
+        Args: never
+        Returns: {
+          metric: string
+          value: number
+        }[]
+      }
+      has_any_role: {
+        Args: {
+          _roles: Database["public"]["Enums"]["app_role"][]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
