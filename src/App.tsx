@@ -31,6 +31,7 @@ import DreamSpaces from "./pages/DreamSpaces";
 import Credits from "./pages/Credits";
 import Music from "./pages/Music";
 import Lives from "./pages/Lives";
+import Groups from "./pages/Groups";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
