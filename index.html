@@ -1,24 +1,181 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TAMV Nexus - The Advanced Metaverse</title>
-    <meta name="description" content="Enter the Digital Nexus - AI-powered metaverse platform for the future" />
-    <meta name="author" content="TAMV" />
+import { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
+import "./EpicLanding.css"; // Custom animations/styles
 
-    <meta property="og:title" content="TAMV Nexus - The Advanced Metaverse" />
-    <meta property="og:description" content="Enter the Digital Nexus - AI-powered metaverse platform for the future" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+const messages = [
+  "NO PUEDEN SEGUIR PRETENDIENDO NO MIRAR",
+  "LATAM HA PERMANECIDO EN SILENCIO, PERO HOY HA DESPERTADO DESDE LA OBSCURIDAD UNA LEYENDA URBANA",
+  "LA ELITE ESTA EN LA CASA, QUE SE SIENTA COMO CADA PARTE DE TU SER EXPRESA SU ORGULLO LATINOAMERICANO",
+  "ANUBIS VILLASEÑOR, ORGULLOSAMENTE REALMONTENSE, TIENE EL HONOR DE ABRIR LAS PUERTAS AL MUNDO DE UNA NUEVA ERA DIGITAL",
+];
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+const epicFinal = {
+  logo: "/tamv-logo.png", // tu logo real
+  claim: "NO IMITAMOS EL FUTURO, NOSOTROS SOMOS EL FUTURO, LO SOÑAMOS, LO CREAMOS, LO SENTIMOS Y DEFINITIVAMENTE LO VIVIMOS",
+  welcome: "BIENVENIDOS A LA ERA LATAM."
+};
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+export default function AppEpicLanding() {
+  const [step, setStep] = useState(0);
+  const [showExplosion, setShowExplosion] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
+  const [showClaim, setShowClaim] = useState(false);
+  const audioRef = useRef();
+  const containerRef = useRef(null);
+
+  // === 3D Starfield/FX with Three.js ===
+  useEffect(() => {
+    // Init Three scene
+    let scene = new THREE.Scene();
+    let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 5000);
+    let renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    containerRef.current.appendChild(renderer.domElement);
+
+    // Star particles
+    let starGeo = new THREE.BufferGeometry();
+    let starCount = 2200;
+    let starVerts = [];
+    for (let i = 0; i < starCount; i++) {
+      let r = Math.random() * 1400 + 200;
+      let theta = Math.PI * 2 * Math.random();
+      let phi = Math.acos(2 * Math.random() - 1);
+      starVerts.push(
+        r * Math.sin(phi) * Math.cos(theta),
+        r * Math.sin(phi) * Math.sin(theta),
+        r * Math.cos(phi),
+      );
+    }
+    starGeo.setAttribute("position", new THREE.Float32BufferAttribute(starVerts, 3));
+    let material = new THREE.PointsMaterial({
+      color: 0x6fffff, size: 2, transparent: true, blending: THREE.AdditiveBlending
+    });
+    let stars = new THREE.Points(starGeo, material);
+    scene.add(stars);
+
+    // Animate groups
+    let frame = 0, contraction = false, explosion = false, scale = 1;
+    function animate() {
+      frame++;
+      stars.rotation.y += 0.0015;
+      stars.rotation.x += 0.0007;
+
+      // Fase movimiento constelaciones
+      if (step === 0 && frame > 80) stars.rotation.z += 0.001;
+
+      // Contracción y expansión monumental
+      if (step === messages.length && !explosion) {
+        contraction = true;
+        scale -= 0.013;
+        stars.scale.set(scale, scale, scale);
+        if (scale <= 0.1) {
+          explosion = true; setShowExplosion(true);
+          setTimeout(() => { setShowLogo(true); }, 1800);
+        }
+      }
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    function onResize() {
+      camera.aspect = window.innerWidth/window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    window.addEventListener("resize", onResize);
+    return () => {
+      renderer.dispose();
+      window.removeEventListener("resize", onResize);
+      // Remove canvas if remounted
+      if (containerRef.current) containerRef.current.innerHTML = "";
+    };
+    // eslint-disable-next-line
+  }, [step]);
+
+  // Background music
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.5;
+      audioRef.current.play().catch(()=>{});
+    }
+  }, []);
+
+  // Step/message timeline
+  useEffect(() => {
+    if (step < messages.length) {
+      const timer = setTimeout(() => setStep(step + 1), step === 0 ? 2800 : 3300);
+      return () => clearTimeout(timer);
+    }
+    if (step === messages.length) { // Pause before explosion
+      const timer = setTimeout(() => setShowExplosion(true), 1600);
+      return () => clearTimeout(timer);
+    }
+    if (showLogo) {
+      setTimeout(() => setShowClaim(true), 2000);
+    }
+  }, [step, showLogo]);
+
+  return (
+    <div style={{
+      background: "#000", position: "absolute", inset: 0, width: "100vw", height: "100vh", overflow: "hidden",
+      fontFamily: "Montserrat, Futura, 'Arial Black', Arial, Helvetica, sans-serif", color: "#fff", zIndex: 1
+    }}>
+      <div ref={containerRef} className="absolute inset-0 w-full h-full z-1"></div>
+      <audio ref={audioRef} src="/audio/latam-techno-welcome.mp3" loop autoPlay preload="auto" />
+      {/* Mensajes iniciales */}
+      <div className="absolute top-[30%] w-full z-10 flex flex-col items-center pointer-events-none">
+        {step < messages.length && (
+          <div className="fade-in-up bg-black/70 px-8 py-6 rounded-2xl shadow-2xl border-4 border-cyan-400/50 font-extrabold text-4xl md:text-6xl text-gradient-glass tracking-tight animate-glow transition-all" style={{letterSpacing:"-0.04em"}}>
+            {messages[step]}
+          </div>
+        )}
+        {showExplosion && (
+          <div className="starburst-explosion"></div>
+        )}
+      </div>
+      {/* Monumental Logo y final */}
+      {showLogo && (
+        <div className="absolute z-40 w-full h-full flex flex-col items-center justify-center transition-all animate-blowup">
+          <img src={epicFinal.logo} alt="TAMV Logo" className="w-[380px] h-[380px] shadow-3xl animate-logo-in z-40" />
+          <div className="text-center mt-12">
+            <div className="text-gradient-glass text-2xl md:text-4xl font-bold animate-pulse">{epicFinal.claim}</div>
+            <div className="mt-10 text-5xl neon-glow font-extrabold animate-pulse2">{epicFinal.welcome}</div>
+          </div>
+        </div>
+      )}
+      <style>{`
+        .starburst-explosion {
+          width: 160vw; height: 160vh;
+          background: radial-gradient(circle, #00fff7 0%, #000 65%, #000 100%);
+          border-radius: 80vw;
+          position: fixed; left: 50%; top: 50%;
+          transform: translate(-50%, -53%) scale(1);
+          animation: blowUpBurst .9s cubic-bezier(.1,1.5,.19,1.01) forwards;
+          z-index:55;
+          box-shadow: 0 0 180px 80px #00fff7b9, 0 0 448px 180px #2667ff66;
+        }
+        @keyframes blowUpBurst {
+          0% { transform: translate(-50%,-53%) scale(0.4); opacity:0.89;}
+          87% {opacity:1;}
+          100% { transform: translate(-50%,-53%) scale(2.4); opacity: 0;}
+        }
+        .fade-in-up {animation:fadeInUp .95s both;}
+        @keyframes fadeInUp {from{opacity:0;transform:translateY(80px);} to{opacity:1; transform:translateY(0);}}
+        .animate-glow { box-shadow:0 0 30px #01fffd8c, 0 0 120px #268cff88; }
+        .text-gradient-glass { background: linear-gradient(90deg,#0ff,#26afff 60%,#fff 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+        .animate-blowup { animation: blowUpLogo 1.2s cubic-bezier(.05,1.4,.19,1.01) .4s both;}
+        @keyframes blowUpLogo { from { transform:scale(0.6); filter:blur(50px);} to{transform:scale(1); filter:none;} }
+        .neon-glow { text-shadow:0 0 20px #00fff7, 0 0 60px #00aaff,0 0 10px #249fef;}
+        .animate-logo-in {animation:fadeInLogo 2.5s .12s cubic-bezier(.12,1.7,.07,1) both;}
+        @keyframes fadeInLogo {from{opacity:0; scale:0.5;} to{opacity:1; scale:1;}}
+        .animate-pulse {animation:pulse 2s infinite alternate;}
+        .animate-pulse2 {animation:pulse2 1.5s infinite alternate;}
+        @keyframes pulse { 0%{opacity:.65;} 60%{opacity:1;} 100%{opacity:.67;}}
+        @keyframes pulse2 { 0%{opacity:.9;} 100%{opacity:1;}}
+      `}</style>
+    </div>
+  );
+}
