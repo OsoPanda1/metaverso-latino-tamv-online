@@ -1,20 +1,68 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "default",
-  "rsc": false,
+  "name": "TAMV Nexus UI Stack",
+  "version": "2.0.0",
+  "author": "Anubis Villaseñor (TAMV LATAM Founder)",
+  "description": "Civilizational UI/UX architecture for XR, metaverse, and audit-first ecosystems. Designed for dignity, transparency, and avant-garde digital sovereignty.",
+  "style": "ceremonial",
+  "rsc": true,
   "tsx": true,
   "tailwind": {
     "config": "tailwind.config.ts",
     "css": "src/index.css",
-    "baseColor": "slate",
+    "baseColor": "gold",
     "cssVariables": true,
-    "prefix": ""
+    "prefix": "tamv-",
+    "exportColors": true,
+    "supportScss": true,
+    "themes": [
+      "latam-heritage",
+      "cosmic-future",
+      "audit-light",
+      "resilience-dark"
+    ]
   },
   "aliases": {
     "components": "@/components",
-    "utils": "@/lib/utils",
     "ui": "@/components/ui",
+    "utils": "@/lib/utils",
     "lib": "@/lib",
-    "hooks": "@/hooks"
+    "hooks": "@/hooks",
+    "assets": "@/assets",
+    "contexts": "@/contexts",
+    "store": "@/store",
+    "protocols": "@/protocols",
+    "xr": "@/xr",
+    "dao": "@/dao"
+  },
+  "extensions": [
+    "darkmode",
+    "animations",
+    "theme-switcher",
+    "i18n",
+    "audit-trail",
+    "voice-interface",
+    "haptic-feedback",
+    "ceremonial-scripts",
+    "dao-governance",
+    "memory-safeguards"
+  ],
+  "meta": {
+    "lastUpdated": "2025-11-25T21:59:00-06:00",
+    "projectRoot": "TAMV",
+    "pilares": [
+      "Dignidad",
+      "Memoria",
+      "Transparencia",
+      "Resiliencia",
+      "Civilización"
+    ],
+    "reglas": [
+      "Nunca dañar",
+      "Nunca mentir",
+      "Aceptar cuando no se tiene la respuesta",
+      "Decir NO ante usos destructivos o violentos"
+    ],
+    "codex": "Codex Mexa — integración de vestigios aztecas con interfaces XR futuristas"
   }
 }
