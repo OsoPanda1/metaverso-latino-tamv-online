@@ -1,337 +1,245 @@
-import { useEffect, useState } from 'react';
-import { Navigation } from '@/components/Navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { useEffect, useState, useRef, useCallback } from "react";
+import { Navigation } from "@/components/Navigation";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { Network, Plus, Trash2, Edit } from 'lucide-react';
-import { toast } from 'sonner';
+  Card, CardContent, CardDescription, CardHeader, CardTitle
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { QuantumLoader } from "@/components/quantum/QuantumLoader";
+import { EmotionGlow } from "@/components/quantum/EmotionGlow";
+import { AIGuardianStatus } from "@/components/quantum/AIGuardianStatus";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { Camera, Loader2, Save } from "lucide-react";
+import { toast } from "sonner";
+import { useFileUpload } from "@/hooks/useFileUpload";
 
-interface NexusEntity {
-  id: string;
-  name: string;
-  entity_type: string;
-  description: string | null;
-  is_active: boolean;
-  created_at: string;
-}
+// Mock XR Effects
+import { MatrixRainCanvas } from "@/components/xr-effects/MatrixRainCanvas";
+import { HoloHexGridSVG } from "@/components/xr-effects/HoloHexGridSVG";
+import { ParallaxMotion } from "@/components/xr-effects/ParallaxMotion";
 
-const Nexus = () => {
+// Social/Media panels (list explicit, can be expanded if needed)
+import { TamvPhotoGallery } from "@/components/quantum/TamvPhotoGallery";
+import { TamvGroupsInCommon } from "@/components/quantum/TamvGroupsInCommon";
+import { TamvChannelsInCommon } from "@/components/quantum/TamvChannelsInCommon";
+import { TamvWishlist } from "@/components/quantum/TamvWishlist";
+import { TamvReactions } from "@/components/quantum/TamvReactions";
+
+const XR_VISUAL_COLORS = ["#00ffe1", "#2dc7ff", "#69f8dc", "#1b7fff", "#fff"];
+
+const Profile = () => {
   const { user } = useAuth();
-  const [entities, setEntities] = useState<NexusEntity[]>([]);
+  const messagesEndRef = useRef(null);
   const [loading, setLoading] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [purposeDialogOpen, setPurposeDialogOpen] = useState(false);
-  const [selectedEntity, setSelectedEntity] = useState<NexusEntity | null>(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    entity_type: 'avatar',
-    description: '',
-  });
-  const [purposeData, setPurposeData] = useState({
-    purpose_type: '',
-    priority: 5,
-    context: {}
-  });
+  const [saving, setSaving] = useState(false);
+  const [emotion, setEmotion] = useState("neutral");
+  const [guardianStatus, setGuardianStatus] = useState("active");
+  const [profile, setProfile] = useState({ username: '', full_name: '', bio: '', avatar_url: '' });
+  const [groups, setGroups] = useState([]);
+  const [channels, setChannels] = useState([]);
+  const [gallery, setGallery] = useState<any[]>([]);
+  const [wishlist, setWishlist] = useState<any[]>([]);
+  const [xrLight, setXRLight] = useState(0);
 
-  const fetchEntities = async () => {
-    if (!user) return;
+  const { uploading, uploadFile } = useFileUpload();
 
-    const { data, error } = await supabase
-      .from('nexus_entities')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      toast.error('Failed to load entities');
-      console.error(error);
-    } else {
-      setEntities(data || []);
-    }
-    setLoading(false);
-  };
-
+  // --- Visual FX: Animate floated lights, MatrixRain activation, HoloGrid ---
   useEffect(() => {
-    fetchEntities();
-
-    // Set up realtime subscription
-    const channel = supabase
-      .channel('nexus_entities_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'nexus_entities',
-          filter: `user_id=eq.${user?.id}`,
-        },
-        () => {
-          fetchEntities();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
+    let frame = 0;
+    let running = true;
+    const step = () => {
+      setXRLight((prev) => (prev + 1) % XR_VISUAL_COLORS.length);
+      if (running) {
+        frame = requestAnimationFrame(step);
+      }
     };
+    step();
+    return () => { running = false; cancelAnimationFrame(frame); };
+  }, []);
+
+  // --- Fetch user profile and all panels ---
+  useEffect(() => {
+    if (!user) return;
+    setLoading(true);
+    setEmotion("processing");
+    setGuardianStatus("verifying");
+    const fetchProfile = async () => {
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+      // MOCK: Replace below with full API fetch logic for demo
+      setGroups([
+        { name: "XR Creators", members: 56, cover:"/xr-group-1.png" },
+        { name: "Codex Masters", members: 41, cover:"/xr-group-2.png" }
+      ]);
+      setChannels([
+        { name: "TAMV News", members: 99, icon:"📰"}, { name: "Civilizatorio Lounge", members: 28, icon:"🎙️"}
+      ]);
+      setGallery([
+        { url: data?.avatar_url },
+        { url: "/gallery-1.jpg" },
+        { url: "/gallery-2.jpg" },
+        { url: "/gallery-3.jpg" }
+      ]);
+      setWishlist([
+        { title: "Asset MatrixRain", url: "#", description: "Fondo holográfico, XR ready", icon:"💠" },
+        { title: "Avatar UltraXR", url: "#", description: "Ready para Metaverso", icon:"🦾" }
+      ]);
+      if (error) {
+        toast.error('Error fetching profile');
+        setEmotion("error");
+        setGuardianStatus("blocked");
+      } else if (data) {
+        setProfile({
+          username: data.username || '',
+          full_name: data.full_name || '',
+          bio: data.bio || '',
+          avatar_url: data.avatar_url || '',
+        });
+        setEmotion("success");
+        setGuardianStatus("active");
+      }
+      setLoading(false);
+    };
+    fetchProfile();
   }, [user]);
 
-  const handleCreate = async () => {
-    if (!user || !formData.name) return;
-
-    const { error } = await supabase.from('nexus_entities').insert({
-      user_id: user.id,
-      name: formData.name,
-      entity_type: formData.entity_type,
-      description: formData.description || null,
-    });
-
-    if (error) {
-      toast.error('Failed to create entity');
-      console.error(error);
-    } else {
-      toast.success('Entity created successfully');
-      setDialogOpen(false);
-      setFormData({ name: '', entity_type: 'avatar', description: '' });
-
-      // Log transaction
-      await supabase.from('transactional_metadata').insert({
-        user_id: user.id,
-        transaction_type: 'entity_created',
-        payload: { entity_name: formData.name, entity_type: formData.entity_type }
-      });
+  // Visual handler for avatar upload
+  const handleAvatarUpload = async (e: any) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = await uploadFile(file, 'avatars');
+    if (url) {
+      setProfile((prev) => ({ ...prev, avatar_url: url }));
+      setGallery(prev => [{ url }, ...prev]);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    const { error } = await supabase.from('nexus_entities').delete().eq('id', id);
-
+  // Save profile logic
+  const handleSave = async () => {
+    if (!user) return;
+    setSaving(true);
+    setEmotion("processing");
+    setGuardianStatus("verifying");
+    const { error } = await supabase.from('profiles')
+      .update({
+        username: profile.username, full_name: profile.full_name,
+        bio: profile.bio, avatar_url: profile.avatar_url,
+      })
+      .eq('id', user.id);
     if (error) {
-      toast.error('Failed to delete entity');
+      toast.error('Failed to update profile');
+      setEmotion("error"); setGuardianStatus("blocked");
     } else {
-      toast.success('Entity deleted');
+      toast.success('Profile updated successfully');
+      setEmotion("success"); setGuardianStatus("active");
     }
+    setSaving(false);
   };
 
-  const handleAddPurpose = async () => {
-    if (!selectedEntity || !purposeData.purpose_type) return;
+  // Chido/Chanclazo/ALV/CMAMO reactions
+  const reactions = [
+    { type: "chido", label: "Chido", emoji: "🤙", color: "bg-emerald-500" },
+    { type: "chanclazo", label: "Chanclazo", emoji: "🩴", color: "bg-yellow-400" },
+    { type: "alv", label: "ALV", emoji: "🚀", color: "bg-pink-500" },
+    { type: "cmamo", label: "CMAMO", emoji: "🦙", color: "bg-cyan-400" },
+  ];
 
-    const { error } = await supabase.from('entity_purposes').insert({
-      entity_id: selectedEntity.id,
-      purpose_type: purposeData.purpose_type,
-      priority: purposeData.priority,
-      context: purposeData.context
-    });
+  if (loading) return <QuantumLoader />;
 
-    if (error) {
-      toast.error('Failed to add purpose');
-    } else {
-      toast.success('Purpose added successfully');
-      setPurposeDialogOpen(false);
-      setPurposeData({ purpose_type: '', priority: 5, context: {} });
-    }
-  };
-
+  // --------------- RENDER PANEL XR/IMMERSIVE ---------------
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen">
+      {/* XR Layers: MatrixRain, HoloHexGrid, Parallax */}
+      <MatrixRainCanvas className="absolute inset-0 z-0 opacity-80" rainColor={XR_VISUAL_COLORS[xrLight]} />
+      <HoloHexGridSVG className="absolute inset-0 z-10 pointer-events-none" glowColor={XR_VISUAL_COLORS[(xrLight+2)%XR_VISUAL_COLORS.length]} nLayers={6} morph animate />
+      <ParallaxMotion
+        className="absolute inset-0 z-20 pointer-events-none"
+        depth={6}
+        blobColor={XR_VISUAL_COLORS[(xrLight+1)%XR_VISUAL_COLORS.length]}
+        fog={true} shimmer={true}
+      />
+
+      {/* Main Profile Content */}
       <Navigation />
-
-      <div className="pt-24 pb-12 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="flex justify-between items-center mb-8">
+      <EmotionGlow emotion={emotion} />
+      <AIGuardianStatus status={guardianStatus} />
+      <div className="pt-24 pb-12 px-2">
+        <div className="container mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-12 gap-8 neon-glass-panel animate-xr-slide">
+          {/* Left: Avatar, social, media */}
+          <section className="md:col-span-4 flex flex-col gap-7 items-center p-8 rounded-3xl glass-morph neon-shadow shadow-xl animate-float-in">
+            <div className="relative">
+              <Avatar className="w-32 h-32 border-4 border-cyan-500/80 shadow-2xl" style={{boxShadow:"0 0 60px #23eaffb8"}}>
+                <AvatarImage src={profile.avatar_url} alt={profile.username} />
+                <AvatarFallback style={{fontSize:'2rem'}}>{profile.username?.[0] || 'U'}</AvatarFallback>
+              </Avatar>
+              <div className="absolute top-2 right-2 animate-bounce-x">{groups.length > 0 && <Users className="w-6 h-6 text-cyan-400" />}</div>
+            </div>
             <div>
-              <h1 className="text-4xl font-bold text-gradient mb-2">Nexus Entities</h1>
-              <p className="text-muted-foreground">Manage your semantic digital entities with purpose</p>
-            </div>
-
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="glow-cyan">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Entity
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create New Entity</DialogTitle>
-                  <DialogDescription>
-                    Add a new entity to your digital nexus
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Name</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="My Avatar"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="type">Type</Label>
-                    <Select
-                      value={formData.entity_type}
-                      onValueChange={(value) => setFormData({ ...formData, entity_type: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="avatar">Avatar</SelectItem>
-                        <SelectItem value="space">Space</SelectItem>
-                        <SelectItem value="asset">Asset</SelectItem>
-                        <SelectItem value="bot">Bot</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      placeholder="Describe your entity..."
-                    />
-                  </div>
-                  <Button onClick={handleCreate} className="w-full glow-cyan">
-                    Create Entity
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
-
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin w-12 h-12 border-4 border-primary border-t-transparent rounded-full mx-auto" />
-            </div>
-          ) : entities.length === 0 ? (
-            <Card className="border-border/50">
-              <CardContent className="text-center py-12">
-                <Network className="w-16 h-16 mx-auto mb-4 text-primary opacity-50" />
-                <p className="text-muted-foreground mb-4">No entities yet</p>
-                <Button onClick={() => setDialogOpen(true)} className="glow-cyan">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Your First Entity
-                </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {entities.map((entity) => (
-                <Card
-                  key={entity.id}
-                  className="border-border/50 hover:border-primary/50 transition-all glow-cyan group"
-                >
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">{entity.name}</CardTitle>
-                        <CardDescription className="capitalize">
-                          {entity.entity_type}
-                        </CardDescription>
-                      </div>
-                      <div className="flex gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => {
-                            setSelectedEntity(entity);
-                            setPurposeDialogOpen(true);
-                          }}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(entity.id)}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      {entity.description || 'No description'}
-                    </p>
-                    <div className="mt-4 flex items-center gap-2">
-                      <div
-                        className={`w-2 h-2 rounded-full ${
-                          entity.is_active ? 'bg-green-500' : 'bg-gray-500'
-                        }`}
-                      />
-                      <span className="text-xs text-muted-foreground">
-                        {entity.is_active ? 'Active' : 'Inactive'}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-
-          <Dialog open={purposeDialogOpen} onOpenChange={setPurposeDialogOpen}>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add Purpose to {selectedEntity?.name}</DialogTitle>
-                <DialogDescription>
-                  Define semantic purpose and priority for this entity
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Purpose Type</Label>
-                  <Input
-                    value={purposeData.purpose_type}
-                    onChange={(e) => setPurposeData({ ...purposeData, purpose_type: e.target.value })}
-                    placeholder="e.g., guardian, trader, explorer"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Priority (1-10)</Label>
-                  <Input
-                    type="number"
-                    min="1"
-                    max="10"
-                    value={purposeData.priority}
-                    onChange={(e) => setPurposeData({ ...purposeData, priority: parseInt(e.target.value) })}
-                  />
-                </div>
-                <Button onClick={handleAddPurpose} className="w-full glow-cyan">
-                  Add Purpose
-                </Button>
+              <h2 className="text-2xl font-bold text-gradient-glass mb-1">{profile.full_name}</h2>
+              <p className="text-cyan-100 text-lg mb-1">@{profile.username}</p>
+              <div className="flex gap-2 mb-3">
+                {groups.map(g => (
+                  <span key={g.name} className="rounded-xl bg-cyan-800/70 px-3 py-1 text-cyan-300 animate-fade-in">{g.name}</span>
+                ))}
               </div>
-            </DialogContent>
-          </Dialog>
+            </div>
+            <TamvGroupsInCommon groups={groups} />
+            <TamvChannelsInCommon channels={channels} />
+            <TamvPhotoGallery images={gallery} />
+          </section>
+
+          {/* Right: Form, wishlist, reactions */}
+          <section className="md:col-span-8 flex flex-col gap-8 p-10 rounded-3xl glass-panel-xr bg-black/10 shadow-2xl animate-float-in delay-1">
+            <div className="flex justify-between items-center">
+              <CardTitle className="text-4xl text-neon-glass font-extrabold">Quantum Metaprofile XR</CardTitle>
+              <span className="text-gradient-glow text-xl hidden md:block drop-shadow-xl">Civilizatorio · XR · Audit · Web3</span>
+            </div>
+            <Label htmlFor="bio" className="text-lg font-bold">Bio / Manifesto</Label>
+            <Textarea
+              id="bio"
+              value={profile.bio}
+              onChange={e => setProfile({ ...profile, bio: e.target.value })}
+              placeholder="Describe tu identidad XR-TAMV, civilización, logros y sueños"
+              rows={4}
+              className="glass-morph bg-black/20 mb-2 text-lg"
+            />
+            <Label htmlFor="avatar_url" className="mt-4 text-lg font-bold">Avatar (URL o Upload)</Label>
+            <div className="flex gap-3 items-center mb-2">
+              <Input
+                id="avatar_url"
+                value={profile.avatar_url}
+                onChange={e => setProfile({ ...profile, avatar_url: e.target.value })}
+                placeholder="https://tamv.com/avatar.jpg"
+                className="glass-morph neon-glow"
+              />
+              <input type="file" accept="image/*" id="avatar-upload" className="hidden" onChange={handleAvatarUpload} />
+              <label htmlFor="avatar-upload">
+                <Button variant="ghost" className="p-2" disabled={uploading}><Camera className="w-5 h-5" /></Button>
+              </label>
+              <Button onClick={handleSave} disabled={saving} className="ml-auto px-6 glass-morph neon-glow">
+                {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5 mr-2" />} Guardar
+              </Button>
+            </div>
+            <TamvWishlist items={wishlist} shimmer onAdd={item => setWishlist([...wishlist, item])} />
+            <TamvReactions options={reactions} entityId={user?.id} motion parallax neonGlow />
+          </section>
         </div>
+        {/* Floating or parallax blob/particles, e.g. */}
+        <svg className="fixed right-0 bottom-0 z-50 pointer-events-none" width="600" height="400">
+          <defs>
+            <radialGradient id="g1" cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stopColor="#0ff" stopOpacity="1"/>
+              <stop offset="100%" stopColor="#19f9d8" stopOpacity="0"/>
+            </radialGradient>
+          </defs>
+          <ellipse cx={500+xrLight*10} cy="320" rx="120" ry="40" fill="url(#g1)" opacity="0.5" className="animate-pulse"/>
+        </svg>
       </div>
     </div>
   );
 };
 
-export default Nexus;
+export default Profile;
