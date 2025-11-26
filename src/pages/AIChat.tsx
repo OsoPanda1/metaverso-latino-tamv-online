@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Brain, Send, Loader2 } from "lucide-react";
+import { Brain, Send, Loader2, BookOpen } from "lucide-react";
 import { QuantumLoader } from "@/components/quantum/QuantumLoader";
 import { EmotionGlow } from "@/components/quantum/EmotionGlow";
 import { AIGuardianStatus } from "@/components/quantum/AIGuardianStatus";
+import { OriginMessage } from "@/components/quantum/OriginMessage";
 import { toast } from "sonner";
 
 interface Message {
@@ -25,10 +26,20 @@ const AIChat = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [guardianStatus, setGuardianStatus] = useState("active");
   const [emotion, setEmotion] = useState("neutral");
+  const [showOrigin, setShowOrigin] = useState(false);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    // Show origin message on first load
+    const hasSeenOrigin = localStorage.getItem("isabella_origin_seen");
+    if (!hasSeenOrigin) {
+      setShowOrigin(true);
+      localStorage.setItem("isabella_origin_seen", "true");
+    }
+  }, []);
 
   const sendMessage = async () => {
     if (!input.trim() || !user) return;
@@ -81,13 +92,25 @@ const AIChat = () => {
     <div className="min-h-screen">
       <Navigation />
       <EmotionGlow emotion={emotion} />
+      <OriginMessage show={showOrigin} onClose={() => setShowOrigin(false)} />
       <div className="pt-24 pb-8 px-4">
         <div className="container mx-auto max-w-4xl">
           <Card className="h-[calc(100vh-12rem)] flex flex-col border-primary/30">
             <CardHeader className="border-b border-border/50">
-              <CardTitle className="flex items-center gap-2">
-                <Brain className="w-6 h-6 text-primary animate-pulse" />
-                <span className="text-gradient">Isabella · Quantum Nexus AI</span>
+              <CardTitle className="flex items-center gap-2 justify-between">
+                <div className="flex items-center gap-2">
+                  <Brain className="w-6 h-6 text-primary animate-pulse" />
+                  <span className="text-gradient">Isabella · Quantum Nexus AI</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowOrigin(true)}
+                  className="gap-2"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  CODEX
+                </Button>
               </CardTitle>
               <AIGuardianStatus status={guardianStatus} />
             </CardHeader>
