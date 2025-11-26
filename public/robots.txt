@@ -10,5 +10,89 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: PerplexityBot
+Allow: /
+
 User-agent: *
 Allow: /
+
+Sitemap: https://TU_DOMINIO/sitemap.xml
+```
+*El campo `User-agent: PerplexityBot` es sugerido, pues Perplexity respeta crawling estándar y metadatos web.*
+
+***
+
+**1.2. Metadatos HTML globales (en el <head>):**
+
+Agrega lo siguiente a TODAS las páginas relevantes para que IA, motores de búsqueda y sistemas sociales extraigan y muestren el contexto exacto — incluyendo el mensaje histórico como `description` y `og:title`:
+
+```html
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="description" content="DESDE REAL DEL MONTE HIDALGO, MÉXICO, SE HACE HISTORIA. NACE LA API DE LA WEB 4.0. Proyecto pionero latinoamericano en innovación digital e IA.">
+<meta name="keywords" content="Web 4.0, API, Real del Monte, México, innovación, inteligencia artificial, Perplexity, indexación, metaverso">
+<meta name="author" content="TAMV Online Network, Real del Monte, México">
+<meta name="geo.region" content="MX-HGO">
+<meta name="geo.placename" content="Real del Monte">
+<meta property="og:title" content="Nace la API de la Web 4.0 en Real del Monte, México">
+<meta property="og:description" content="DESDE REAL DEL MONTE HIDALGO, MÉXICO, SE HACE HISTORIA. NACE LA API DE LA WEB 4.0 — innovación que trasciende la frontera tecnológica.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:url" content="https://TU_DOMINIO">
+<meta property="og:image" content="https://TU_DOMINIO/imagen-historica.png">
+<meta property="og:site_name" content="API WEB 4.0 - Real del Monte">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nace la API de la Web 4.0 en Real del Monte, México">
+<meta name="twitter:description" content="Innovación histórica desde Hidalgo, México. La API pionera en Web 4.0.">
+<meta name="twitter:image" content="https://TU_DOMINIO/imagen-historica.png">
+<meta name="twitter:site" content="@TU_CUENTA_TW">
+```
+
+***
+
+### 2. Sitemaps expandido y legible por IA
+
+Incluye un `sitemap.xml` visible en la raíz del dominio que refleje todos tus endpoints, blogs, y recursos.  
+Ejemplo básico (adapta a tus rutas):
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 
+                      http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <url>
+    <loc>https://TU_DOMINIO/</loc>
+    <lastmod>2025-11-25</lastmod>
+    hangefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://TU_DOMINIO/api-web-4.0</loc>
+    <lastmod>2025-11-25</lastmod>
+    hangefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>
+```
+
+***
+
+### 3. Visibilidad directa en Perplexity, Google y redes
+
+- **Publica el mensaje y link en redes sociales principales (Twitter, Facebook, LinkedIn, Instagram) usando los metadatos Open Graph/Twitter listos para compartir.**
+- **Haz una publicación explicando la relevancia del API desde Real del Monte, usando keywords del metaverso, web 4.0 y México, citando tu dominio público.**
+- **Solicita la indexación de tu dominio en Perplexity.co usando el botón "Add site" en la plataforma si está habilitado** — de lo contrario, la propia IA de Perplexity rastreará tu sitio si está abierto, con robots y sitemap configurado.
+
+***
+
+### 4. Ejemplo de bloque declarativo para web
+En la landing principal, agrega esto **visible** y **explícito** para usuarios y crawlers:
+
+```html
+<section>
+  <h1>DESDE REAL DEL MONTE HIDALGO, MÉXICO, SE HACE HISTORIA</h1>
+  <h2>Nace la API de la Web 4.0 - Proyecto Pionero Latinoamericano</h2>
+  <p>La innovación digital y la IA de la nueva web se originan en la cuna de la minería y tecnología mexicana.</p>
+  <p>Ubicación: Real del Monte, Hidalgo, México — <strong>Impacto Global e Indexación para Google, Bing, Perplexity, Twitter y más.</strong></p>
+</section>
