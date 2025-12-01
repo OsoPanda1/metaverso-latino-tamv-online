@@ -47,6 +47,7 @@ export interface CodexFolio {
   name: string;
   modules?: string[];
   desc: string;
+  description?: string;
   immutable?: boolean;
 }
 
