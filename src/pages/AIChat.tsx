@@ -88,7 +88,8 @@ const AIChat = () => {
       const file = new File([blob], "audio.webm", { type: "audio/webm" });
       const { data, error } = await supabase.storage.from("isabella-media").upload(`audios/${Date.now()}-${user?.id}.webm`, file);
       if (error) throw error;
-      const audioUrl = supabase.storage.from("isabella-media").getPublicUrl(data.path).publicUrl;
+      const { data: urlData } = supabase.storage.from("isabella-media").getPublicUrl(data.path);
+      const audioUrl = urlData.publicUrl;
       setMessages(prev => [...prev, { role: "user", content: "[Audio enviado]", type: "audio", url: audioUrl }]);
       // Enviar a IA el link o transcripción
     } catch (err: any) { toast.error(err.message); }
@@ -100,7 +101,8 @@ const AIChat = () => {
     try {
       const { data, error } = await supabase.storage.from("isabella-media").upload(`files/${Date.now()}-${user?.id}-${file.name}`, file);
       if (error) throw error;
-      const fileUrl = supabase.storage.from("isabella-media").getPublicUrl(data.path).publicUrl;
+      const { data: urlData } = supabase.storage.from("isabella-media").getPublicUrl(data.path);
+      const fileUrl = urlData.publicUrl;
       setMessages(prev => [...prev, { role: "user", content: "[Archivo enviado]", type: "file", url: fileUrl, fileName: file.name }]);
       // Auditar evento, enviar callback...
     } catch (err: any) { toast.error(err.message); }
@@ -113,7 +115,8 @@ const AIChat = () => {
       const file = new File([photo], "photo.png", { type: "image/png" });
       const { data, error } = await supabase.storage.from("isabella-media").upload(`photos/${Date.now()}-${user?.id}.png`, file);
       if (error) throw error;
-      const imageUrl = supabase.storage.from("isabella-media").getPublicUrl(data.path).publicUrl;
+      const { data: urlData } = supabase.storage.from("isabella-media").getPublicUrl(data.path);
+      const imageUrl = urlData.publicUrl;
       setMessages(prev => [...prev, { role: "user", content: "[Foto enviada]", type: "photo", url: imageUrl }]);
       // Auditar evento, enviar callback...
     } catch (err: any) { toast.error(err.message); }

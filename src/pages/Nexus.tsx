@@ -13,7 +13,7 @@ import { EmotionGlow } from "@/components/quantum/EmotionGlow";
 import { AIGuardianStatus } from "@/components/quantum/AIGuardianStatus";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Camera, Loader2, Save } from "lucide-react";
+import { Camera, Loader2, Save, Users } from "lucide-react";
 import { toast } from "sonner";
 import { useFileUpload } from "@/hooks/useFileUpload";
 
