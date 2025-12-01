@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import AIChat from "./pages/AIChat";
+import Codex from "./pages/Codex";
 import Nexus from "./pages/Nexus";
 import Profile from "./pages/Profile";
 import Store from "./pages/Store";
@@ -67,6 +68,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <AIChat />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/codex"
+              element={
+                <ProtectedRoute>
+                  <Codex />
                 </ProtectedRoute>
               }
             />

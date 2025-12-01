@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { Shield, AlertCircle, CheckCircle, XCircle, Bell, BellOff } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
+import { SecurityDashboard } from "@/components/features/SecurityDashboard";
 
 interface Guardian {
   id: string;
@@ -264,6 +265,10 @@ const Guardians = () => {
               <p className="text-sm text-muted-foreground">Monitoreando</p>
             </CardContent>
           </Card>
+        </div>
+
+        <div className="mb-8">
+          <SecurityDashboard />
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6 mb-8">
