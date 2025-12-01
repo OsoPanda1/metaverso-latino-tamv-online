@@ -15,7 +15,7 @@ import { useFileUpload } from "@/hooks/useFileUpload";
 import { Badge } from "@/components/ui/badge";
 import { QuantumLoader } from "@/components/quantum/QuantumLoader";
 import { MatrixRainCanvas } from "@/components/xr-effects/MatrixRainCanvas";
-import { MiniAnubisGift, TamvStickerAnim, Tamv3DPreview } from "@/components/quantum/TamvGiftsAssets";
+import { MiniAnubisGift, TamvStickerAnim, Tamv3DPreview } from "@/components/quantum/TamvGiftsAssetsExtra";
 
 interface DigitalAsset {
   id: string;
@@ -217,7 +217,7 @@ const Store = () => {
               <Badge variant="secondary" className="px-4 py-3 neon-glow">
                 <Rocket className="w-5 h-5 mr-2" /> Metaverse
               </Badge>
-              <Badge variant="ghost" className="px-3 py-3 text-yellow-400"><Diamond className="w-5 h-5 mr-2" />Exclusivos</Badge>
+              <Badge variant="outline" className="px-3 py-3 text-yellow-400"><Diamond className="w-5 h-5 mr-2" />Exclusivos</Badge>
             </div>
           </header>
 

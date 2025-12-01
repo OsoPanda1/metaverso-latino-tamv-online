@@ -128,7 +128,7 @@ const Profile = () => {
   // ------------------------------
 
   return (
-    <TamvXRBackground effect="matrixrain-holohex">
+    <TamvXRBackground effect="matrixrain">
       <Navigation />
       <EmotionGlow emotion={emotion} />
       <AIGuardianStatus status={guardianStatus} />
