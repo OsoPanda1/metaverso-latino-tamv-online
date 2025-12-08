@@ -33,6 +33,7 @@ import Credits from "./pages/Credits";
 import Music from "./pages/Music";
 import Lives from "./pages/Lives";
 import Groups from "./pages/Groups";
+import DevHub from "./pages/DevHub";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -174,6 +175,7 @@ const App = () => (
             <Route path="/cells" element={<ProtectedRoute><Cells /></ProtectedRoute>} />
             <Route path="/forks" element={<ProtectedRoute><Forks /></ProtectedRoute>} />
             <Route path="/groups" element={<ProtectedRoute><Groups /></ProtectedRoute>} />
+            <Route path="/devhub" element={<DevHub />} />
             <Route path="/dreamspaces" element={<ProtectedRoute><DreamSpaces /></ProtectedRoute>} />
             <Route path="/credits" element={<ProtectedRoute><Credits /></ProtectedRoute>} />
               <Route path="/music" element={<ProtectedRoute><Music /></ProtectedRoute>} />
