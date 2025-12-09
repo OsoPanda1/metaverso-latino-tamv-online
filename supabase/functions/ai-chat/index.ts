@@ -147,8 +147,11 @@ serve(async (req) => {
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
+      console.error("[ISABELLA] LOVABLE_API_KEY not configured");
       throw new Error("LOVABLE_API_KEY not configured");
     }
+
+    console.log("[ISABELLA] Sending request to AI gateway...");
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -167,24 +170,35 @@ serve(async (req) => {
 
     if (!response.ok) {
       if (response.status === 429) {
+        console.warn("[ISABELLA] Rate limit exceeded");
         return new Response(
-          JSON.stringify({ error: "Límite de peticiones excedido. Por favor espera un momento." }),
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          JSON.stringify({ 
+            response: "Disculpa, estoy procesando muchas solicitudes. Por favor, espera un momento e intenta de nuevo. 🌟",
+            guardianStatus: "rate_limited",
+            emotion: { dominant: "calm" }
+          }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
       if (response.status === 402) {
+        console.warn("[ISABELLA] Payment required");
         return new Response(
-          JSON.stringify({ error: "Se requiere pago. Agrega créditos a tu workspace de Lovable AI." }),
-          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          JSON.stringify({ 
+            response: "El servicio de IA necesita créditos adicionales. Contacta al administrador del sistema.",
+            guardianStatus: "payment_required",
+            emotion: { dominant: "protective" }
+          }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
       const errorText = await response.text();
-      console.error('AI gateway error:', response.status, errorText);
+      console.error('[ISABELLA] AI gateway error:', response.status, errorText);
       throw new Error('AI gateway error');
     }
 
     const data = await response.json();
-    const aiResponse = data.choices[0].message.content;
+    const aiResponse = data.choices?.[0]?.message?.content || "No pude generar una respuesta. Intenta de nuevo.";
+    console.log("[ISABELLA] Response generated successfully");
 
     // Log CODEX activation in BookPI
     if (user) {
@@ -234,8 +248,34 @@ serve(async (req) => {
       });
     }
 
+    // Detect emotion from response
+    const emotionMap: Record<string, string[]> = {
+      joy: ["feliz", "alegría", "maravilloso", "excelente", "genial"],
+      calm: ["tranquilo", "paz", "sereno", "equilibrio"],
+      curious: ["interesante", "fascinante", "exploremos"],
+      empathy: ["entiendo", "comprendo", "siento", "apoyo"],
+      wisdom: ["reflexión", "sabiduría", "perspectiva"]
+    };
+    
+    let dominantEmotion = "neutral";
+    const lowerResponse = aiResponse.toLowerCase();
+    for (const [emotion, keywords] of Object.entries(emotionMap)) {
+      if (keywords.some(k => lowerResponse.includes(k))) {
+        dominantEmotion = emotion;
+        break;
+      }
+    }
+
     return new Response(
-      JSON.stringify({ response: aiResponse }),
+      JSON.stringify({ 
+        response: aiResponse,
+        emotion: { dominant: dominantEmotion },
+        guardianStatus: "active",
+        bookpiEntry: {
+          timestamp: new Date().toISOString(),
+          signature: `ISA-${Date.now().toString(36).toUpperCase()}`
+        }
+      }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
