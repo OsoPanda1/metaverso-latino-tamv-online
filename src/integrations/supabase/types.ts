@@ -228,6 +228,42 @@ export type Database = {
         }
         Relationships: []
       }
+      anubis_sentinel_alerts: {
+        Row: {
+          action: string
+          auto_resolved: boolean | null
+          created_at: string | null
+          id: string
+          module: string
+          resolution_timestamp: string | null
+          risk: string
+          signal: Json
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          auto_resolved?: boolean | null
+          created_at?: string | null
+          id?: string
+          module: string
+          resolution_timestamp?: string | null
+          risk: string
+          signal: Json
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          auto_resolved?: boolean | null
+          created_at?: string | null
+          id?: string
+          module?: string
+          resolution_timestamp?: string | null
+          risk?: string
+          signal?: Json
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       artists: {
         Row: {
           bio: string | null
@@ -496,6 +532,75 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      aztek_gods_reactions: {
+        Row: {
+          created_at: string | null
+          deity_invoked: string | null
+          id: string
+          meta: Json | null
+          module: string
+          power_level: number | null
+          reaction: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          deity_invoked?: string | null
+          id?: string
+          meta?: Json | null
+          module: string
+          power_level?: number | null
+          reaction: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          deity_invoked?: string | null
+          id?: string
+          meta?: Json | null
+          module?: string
+          power_level?: number | null
+          reaction?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      blackhole_events: {
+        Row: {
+          created_at: string | null
+          id: string
+          quarantined: boolean | null
+          resolution_status: string | null
+          resolved_at: string | null
+          severity: string
+          signal: Json
+          source: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          quarantined?: boolean | null
+          resolution_status?: string | null
+          resolved_at?: string | null
+          severity: string
+          signal: Json
+          source: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          quarantined?: boolean | null
+          resolution_status?: string | null
+          resolved_at?: string | null
+          severity?: string
+          signal?: Json
+          source?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       bookpi_entries: {
         Row: {
@@ -1005,6 +1110,39 @@ export type Database = {
         }
         Relationships: []
       }
+      dekateotl_rules: {
+        Row: {
+          active: boolean | null
+          condition: Json
+          created_at: string | null
+          deity: string
+          effect: Json
+          id: string
+          invocation_count: number | null
+          weight: number
+        }
+        Insert: {
+          active?: boolean | null
+          condition: Json
+          created_at?: string | null
+          deity: string
+          effect: Json
+          id?: string
+          invocation_count?: number | null
+          weight?: number
+        }
+        Update: {
+          active?: boolean | null
+          condition?: Json
+          created_at?: string | null
+          deity?: string
+          effect?: Json
+          id?: string
+          invocation_count?: number | null
+          weight?: number
+        }
+        Relationships: []
+      }
       digital_assets: {
         Row: {
           asset_type: string
@@ -1135,6 +1273,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      docs: {
+        Row: {
+          author_id: string | null
+          category: string | null
+          content: string
+          created_at: string | null
+          id: string
+          slug: string
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+          views_count: number | null
+        }
+        Insert: {
+          author_id?: string | null
+          category?: string | null
+          content: string
+          created_at?: string | null
+          id?: string
+          slug: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+          views_count?: number | null
+        }
+        Update: {
+          author_id?: string | null
+          category?: string | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          slug?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+          views_count?: number | null
+        }
+        Relationships: []
       }
       dreamspace_participants: {
         Row: {
@@ -1273,6 +1450,42 @@ export type Database = {
         }
         Relationships: []
       }
+      engines_eoct: {
+        Row: {
+          active: boolean | null
+          created_at: string | null
+          execution_count: number | null
+          id: string
+          last_execution: string | null
+          name: string
+          policy: Json
+          quantum_filters: Json | null
+          version: string
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string | null
+          execution_count?: number | null
+          id?: string
+          last_execution?: string | null
+          name: string
+          policy?: Json
+          quantum_filters?: Json | null
+          version: string
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string | null
+          execution_count?: number | null
+          id?: string
+          last_execution?: string | null
+          name?: string
+          policy?: Json
+          quantum_filters?: Json | null
+          version?: string
+        }
+        Relationships: []
+      }
       entity_logs: {
         Row: {
           action: string
@@ -1397,6 +1610,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      federation_registry_continental: {
+        Row: {
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          hash: string
+          id: string
+          signer: string
+        }
+        Insert: {
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          hash: string
+          id?: string
+          signer: string
+        }
+        Update: {
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          hash?: string
+          id?: string
+          signer?: string
+        }
+        Relationships: []
+      }
+      federation_registry_local: {
+        Row: {
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          hash: string
+          id: string
+          signer: string
+        }
+        Insert: {
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          hash: string
+          id?: string
+          signer: string
+        }
+        Update: {
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          hash?: string
+          id?: string
+          signer?: string
+        }
+        Relationships: []
       }
       follows: {
         Row: {
@@ -1801,6 +2068,42 @@ export type Database = {
         }
         Relationships: []
       }
+      id_nvida_identities: {
+        Row: {
+          biometric_hash: string
+          created_at: string | null
+          device_fingerprint: string | null
+          id: string
+          quantum_signature: string | null
+          trust_score: number | null
+          updated_at: string | null
+          user_id: string
+          verified: boolean | null
+        }
+        Insert: {
+          biometric_hash: string
+          created_at?: string | null
+          device_fingerprint?: string | null
+          id?: string
+          quantum_signature?: string | null
+          trust_score?: number | null
+          updated_at?: string | null
+          user_id: string
+          verified?: boolean | null
+        }
+        Update: {
+          biometric_hash?: string
+          created_at?: string | null
+          device_fingerprint?: string | null
+          id?: string
+          quantum_signature?: string | null
+          trust_score?: number | null
+          updated_at?: string | null
+          user_id?: string
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
       isabella_sessions: {
         Row: {
           context_data: Json | null
@@ -1836,6 +2139,131 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      items: {
+        Row: {
+          base_price: number
+          category: string | null
+          created_at: string | null
+          current_price: number
+          description: string | null
+          federation_hash: string | null
+          id: string
+          metadata: Json | null
+          owner: string
+          published: boolean | null
+          rarity: string | null
+          stock: number
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          base_price?: number
+          category?: string | null
+          created_at?: string | null
+          current_price?: number
+          description?: string | null
+          federation_hash?: string | null
+          id?: string
+          metadata?: Json | null
+          owner: string
+          published?: boolean | null
+          rarity?: string | null
+          stock?: number
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          base_price?: number
+          category?: string | null
+          created_at?: string | null
+          current_price?: number
+          description?: string | null
+          federation_hash?: string | null
+          id?: string
+          metadata?: Json | null
+          owner?: string
+          published?: boolean | null
+          rarity?: string | null
+          stock?: number
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      kaos_audio3d_events: {
+        Row: {
+          audio_url: string | null
+          created_at: string | null
+          duration_ms: number | null
+          frequency_spectrum: Json | null
+          id: string
+          spatial_config: Json | null
+          stream_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          audio_url?: string | null
+          created_at?: string | null
+          duration_ms?: number | null
+          frequency_spectrum?: Json | null
+          id?: string
+          spatial_config?: Json | null
+          stream_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          audio_url?: string | null
+          created_at?: string | null
+          duration_ms?: number | null
+          frequency_spectrum?: Json | null
+          id?: string
+          spatial_config?: Json | null
+          stream_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      lessons: {
+        Row: {
+          content: string | null
+          course_id: string | null
+          created_at: string | null
+          duration_minutes: number | null
+          id: string
+          media_url: string | null
+          order_index: number | null
+          title: string
+        }
+        Insert: {
+          content?: string | null
+          course_id?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          media_url?: string | null
+          order_index?: number | null
+          title: string
+        }
+        Update: {
+          content?: string | null
+          course_id?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          media_url?: string | null
+          order_index?: number | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lessons_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       live_streams: {
         Row: {
@@ -2454,6 +2882,93 @@ export type Database = {
           },
         ]
       }
+      radars_mos: {
+        Row: {
+          created_at: string | null
+          health_status: string | null
+          id: string
+          last_ping: string | null
+          metrics: Json | null
+          pair_id: string
+          role: string
+          scope: string
+        }
+        Insert: {
+          created_at?: string | null
+          health_status?: string | null
+          id?: string
+          last_ping?: string | null
+          metrics?: Json | null
+          pair_id: string
+          role: string
+          scope: string
+        }
+        Update: {
+          created_at?: string | null
+          health_status?: string | null
+          id?: string
+          last_ping?: string | null
+          metrics?: Json | null
+          pair_id?: string
+          role?: string
+          scope?: string
+        }
+        Relationships: []
+      }
+      radars_quetzalcoatl: {
+        Row: {
+          coverage: string
+          created_at: string | null
+          id: string
+          prophecy_data: Json | null
+          signals: Json
+          wisdom_score: number | null
+        }
+        Insert: {
+          coverage: string
+          created_at?: string | null
+          id?: string
+          prophecy_data?: Json | null
+          signals: Json
+          wisdom_score?: number | null
+        }
+        Update: {
+          coverage?: string
+          created_at?: string | null
+          id?: string
+          prophecy_data?: Json | null
+          signals?: Json
+          wisdom_score?: number | null
+        }
+        Relationships: []
+      }
+      radars_ra: {
+        Row: {
+          active_watchers: number | null
+          coverage: string
+          created_at: string | null
+          id: string
+          signals: Json
+          threat_level: string | null
+        }
+        Insert: {
+          active_watchers?: number | null
+          coverage: string
+          created_at?: string | null
+          id?: string
+          signals: Json
+          threat_level?: string | null
+        }
+        Update: {
+          active_watchers?: number | null
+          coverage?: string
+          created_at?: string | null
+          id?: string
+          signals?: Json
+          threat_level?: string | null
+        }
+        Relationships: []
+      }
       reputation_scores: {
         Row: {
           contribution_score: number | null
@@ -2484,6 +2999,39 @@ export type Database = {
           last_updated?: string | null
           total_score?: number | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      rtc_signals: {
+        Row: {
+          created_at: string | null
+          from_user: string
+          id: string
+          payload: Json
+          processed: boolean | null
+          room_id: string
+          to_user: string | null
+          type: string
+        }
+        Insert: {
+          created_at?: string | null
+          from_user: string
+          id?: string
+          payload: Json
+          processed?: boolean | null
+          room_id: string
+          to_user?: string | null
+          type: string
+        }
+        Update: {
+          created_at?: string | null
+          from_user?: string
+          id?: string
+          payload?: Json
+          processed?: boolean | null
+          room_id?: string
+          to_user?: string | null
+          type?: string
         }
         Relationships: []
       }
@@ -2630,6 +3178,48 @@ export type Database = {
           membership_level?: string | null
           total_earned?: number | null
           total_spent?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tamvcrums: {
+        Row: {
+          action: string
+          assigned_to: string | null
+          context: string
+          created_at: string | null
+          description: string
+          id: string
+          priority: number | null
+          resolution_notes: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          assigned_to?: string | null
+          context: string
+          created_at?: string | null
+          description: string
+          id?: string
+          priority?: number | null
+          resolution_notes?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          assigned_to?: string | null
+          context?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          priority?: number | null
+          resolution_notes?: string | null
+          status?: string | null
           updated_at?: string | null
           user_id?: string
         }
@@ -3060,7 +3650,20 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      federation_double_verification: {
+        Row: {
+          continental_at: string | null
+          continental_hash: string | null
+          continental_signer: string | null
+          entity_id: string | null
+          entity_type: string | null
+          local_at: string | null
+          local_hash: string | null
+          local_signer: string | null
+          verified: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       can_perform_action: {
