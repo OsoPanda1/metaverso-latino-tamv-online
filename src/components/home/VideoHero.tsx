@@ -1,7 +1,9 @@
-import { useState, useRef } from "react";
-import { Play, Pause, Volume2, VolumeX, Maximize, Sparkles } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Play, Pause, Volume2, VolumeX, Sparkles, Users, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface VideoHeroProps {
   videoUrl?: string;
@@ -13,12 +15,18 @@ interface VideoHeroProps {
 export const VideoHero = ({ 
   videoUrl = "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   posterUrl,
-  title = "TAMV ONLINE",
-  subtitle = "El Metaverso Latinoamericano"
+  title = "TAMV",
+  subtitle = "Metaverso Latinoamericano"
 }: VideoHeroProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, []);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -39,89 +47,107 @@ export const VideoHero = ({
   };
 
   return (
-    <section className="relative w-full aspect-video max-h-[70vh] overflow-hidden rounded-3xl mx-auto">
-      {/* Video Container */}
-      <div className="absolute inset-0 bg-card/20 backdrop-blur-sm">
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover"
-          poster={posterUrl}
-          muted={isMuted}
-          loop
-          playsInline
+    <motion.section 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="relative w-full aspect-[21/9] max-h-[60vh] overflow-hidden rounded-3xl"
+    >
+      {/* Video */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover"
+        poster={posterUrl}
+        muted={isMuted}
+        loop
+        playsInline
+        autoPlay
+      >
+        <source src={videoUrl} type="video/mp4" />
+      </video>
+
+      {/* Gradient overlays */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/70" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+
+      {/* Live indicator */}
+      <div className="absolute top-4 left-4 flex items-center gap-3">
+        <Badge className="bg-red-500 text-white border-0 shadow-lg animate-pulse px-3 py-1">
+          <span className="w-2 h-2 bg-white rounded-full mr-2 animate-ping" />
+          EN VIVO
+        </Badge>
+        <Badge variant="secondary" className="bg-black/50 text-white border-0 backdrop-blur-sm">
+          <Eye className="w-3 h-3 mr-1" /> 24.5K
+        </Badge>
+        <Badge variant="secondary" className="bg-black/50 text-white border-0 backdrop-blur-sm">
+          <Users className="w-3 h-3 mr-1" /> 1.2M usuarios
+        </Badge>
+      </div>
+
+      {/* Content */}
+      <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-8">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="space-y-4"
         >
-          <source src={videoUrl} type="video/mp4" />
-        </video>
-      </div>
-
-      {/* Overlay Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/60" />
-
-      {/* Glass morphism overlay */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-secondary/50 to-transparent" />
-      </div>
-
-      {/* Content Overlay */}
-      <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
-        <div className="max-w-2xl space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30">
-            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-            <span className="text-sm text-primary font-medium">EN VIVO</span>
+          <div className="flex items-center justify-center gap-3">
+            <Sparkles className="w-8 h-8 text-primary animate-pulse" />
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight">
+              <span className="text-gradient">{title}</span>
+            </h1>
+            <Sparkles className="w-8 h-8 text-secondary animate-pulse" />
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-bold text-foreground">
-            <span className="text-gradient">{title}</span>
-          </h1>
-          
-          <p className="text-lg md:text-xl text-muted-foreground">
+          <p className="text-lg md:text-xl text-white/80 font-medium">
             {subtitle}
           </p>
-
-          {/* Controls */}
-          <div className="flex items-center gap-3 pt-4">
+          
+          <div className="flex items-center justify-center gap-4 pt-4">
             <Button
               size="lg"
-              onClick={togglePlay}
-              className="bg-primary/90 hover:bg-primary text-primary-foreground backdrop-blur-sm glow-cyan"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_30px_hsl(190,95%,55%/0.5)] px-8"
+              onClick={() => window.location.href = '/dashboard'}
             >
-              {isPlaying ? (
-                <Pause className="w-5 h-5 mr-2" />
-              ) : (
-                <Play className="w-5 h-5 mr-2" />
-              )}
-              {isPlaying ? "Pausar" : "Reproducir"}
+              <Play className="w-5 h-5 mr-2" fill="currentColor" />
+              Explorar
             </Button>
-
             <Button
-              size="icon"
+              size="lg"
               variant="outline"
-              onClick={toggleMute}
-              className="bg-card/30 backdrop-blur-sm border-border/30 hover:bg-card/50"
+              className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
+              onClick={() => window.location.href = '/ai-chat'}
             >
-              {isMuted ? (
-                <VolumeX className="w-5 h-5" />
-              ) : (
-                <Volume2 className="w-5 h-5" />
-              )}
-            </Button>
-
-            <Button
-              size="icon"
-              variant="outline"
-              className="bg-card/30 backdrop-blur-sm border-border/30 hover:bg-card/50"
-            >
-              <Maximize className="w-5 h-5" />
+              <Sparkles className="w-5 h-5 mr-2" />
+              Isabella IA
             </Button>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Corner decorations */}
-      <div className="absolute top-4 right-4 w-20 h-20 border-t-2 border-r-2 border-primary/30 rounded-tr-3xl" />
-      <div className="absolute bottom-4 left-4 w-20 h-20 border-b-2 border-l-2 border-secondary/30 rounded-bl-3xl" />
-    </section>
+      {/* Controls */}
+      <div className="absolute bottom-4 right-4 flex items-center gap-2">
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={togglePlay}
+          className="w-10 h-10 rounded-full bg-black/50 text-white hover:bg-black/70 backdrop-blur-sm"
+        >
+          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+        </Button>
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={toggleMute}
+          className="w-10 h-10 rounded-full bg-black/50 text-white hover:bg-black/70 backdrop-blur-sm"
+        >
+          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+        </Button>
+      </div>
+
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent" />
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-secondary" />
+    </motion.section>
   );
 };

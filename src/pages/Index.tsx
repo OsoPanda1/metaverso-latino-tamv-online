@@ -26,39 +26,39 @@ const Index = () => {
   }, [user, navigate]);
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-        <Navigation />
-        <MatrixBackground />
+    <div className="min-h-screen relative overflow-hidden bg-background">
+      <Navigation />
+      <MatrixBackground />
 
-        {/* 4 Floating Retractable Toolbars */}
-        <FloatingToolbar position="left" items={leftToolbarItems} accentColor="primary" />
-        <FloatingToolbar position="right" items={rightToolbarItems} accentColor="secondary" />
-        <FloatingToolbar position="top" items={topToolbarItems} accentColor="accent" />
-        <FloatingToolbar position="bottom" items={bottomToolbarItems} accentColor="destructive" />
+      {/* 4 Floating Toolbars */}
+      <FloatingToolbar position="left" items={leftToolbarItems} accentColor="primary" />
+      <FloatingToolbar position="right" items={rightToolbarItems} accentColor="secondary" />
+      <FloatingToolbar position="top" items={topToolbarItems} accentColor="accent" />
+      <FloatingToolbar position="bottom" items={bottomToolbarItems} accentColor="destructive" />
 
-        {/* Main Content */}
-        <main className="relative z-10 pt-24 pb-20 px-4 md:px-8">
-          <div className="container mx-auto max-w-7xl space-y-16">
-            {/* Video Hero Principal */}
-            <VideoHero 
-              title="TAMV ONLINE"
-              subtitle="El Metaverso Latinoamericano - Civilización Digital Cuántica con Isabella IA NextGen™"
-            />
+      {/* Main Content - Minimal padding, maximum visual space */}
+      <main className="relative z-10 pt-20 pb-16 px-3 md:px-6">
+        <div className="max-w-[1600px] mx-auto space-y-8">
+          {/* Hero Video */}
+          <VideoHero 
+            title="TAMV"
+            subtitle="El Metaverso Latinoamericano • Isabella IA NextGen™"
+          />
 
-            {/* DreamSpaces - 2 filas de 5 videos */}
-            <DreamSpacesGrid />
+          {/* DreamSpaces Grid */}
+          <DreamSpacesGrid />
 
-            {/* 4 Columnas: Grupos, Canales, Lives, Tendencias & Hashtags */}
-            <FourColumnsSection />
+          {/* 4 Columns: Groups, Channels, Lives, Trends */}
+          <FourColumnsSection />
 
-            {/* Puentes Oníricos: Conciertos, Galería, Música */}
-            <OniricBridgesSection />
-          </div>
-        </main>
+          {/* Oniric Bridges: Concerts, Gallery, Music */}
+          <OniricBridgesSection />
+        </div>
+      </main>
 
-        {/* Footer gradient */}
-        <div className="fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none z-0" />
-      </div>
+      {/* Footer gradient */}
+      <div className="fixed bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-0" />
+    </div>
   );
 };
 
