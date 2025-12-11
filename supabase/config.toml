@@ -2,3 +2,48 @@ project_id = "dpawoksdbkdicyfksinu"
 
 [functions.ai-chat]
 verify_jwt = false
+
+[functions.id-nvida-verify]
+verify_jwt = true
+
+[functions.blackhole-quarantine]
+verify_jwt = true
+
+[functions.tamvcrums]
+verify_jwt = true
+
+[functions.eoct-triage]
+verify_jwt = true
+
+[functions.anubis-sentinel]
+verify_jwt = true
+
+[functions.dekateotl-eval]
+verify_jwt = true
+
+[functions.radar-systems]
+verify_jwt = true
+
+[functions.kaos-audio3d]
+verify_jwt = true
+
+[functions.check-subscription]
+verify_jwt = true
+
+[functions.create-checkout]
+verify_jwt = true
+
+[functions.customer-portal]
+verify_jwt = true
+
+[functions.dynamic-pricing]
+verify_jwt = true
+
+[functions.fraud-detection]
+verify_jwt = true
+
+[functions.ml-recommendations]
+verify_jwt = false
+
+[functions.nft-mint]
+verify_jwt = true
