@@ -34,6 +34,8 @@ import Music from "./pages/Music";
 import Lives from "./pages/Lives";
 import Groups from "./pages/Groups";
 import DevHub from "./pages/DevHub";
+import Federation from "./pages/Federation";
+import Courses from "./pages/Courses";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -182,6 +184,8 @@ const App = () => (
               <Route path="/lives" element={<ProtectedRoute><Lives /></ProtectedRoute>} />
               <Route path="/artworks" element={<Artworks />} />
               <Route path="/metrics" element={<ProtectedRoute><SystemMetrics /></ProtectedRoute>} />
+              <Route path="/federation" element={<ProtectedRoute><Federation /></ProtectedRoute>} />
+              <Route path="/courses" element={<ProtectedRoute><Courses /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
