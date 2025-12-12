@@ -47,3 +47,6 @@ verify_jwt = false
 
 [functions.nft-mint]
 verify_jwt = true
+
+[functions.isabella-voice]
+verify_jwt = false
