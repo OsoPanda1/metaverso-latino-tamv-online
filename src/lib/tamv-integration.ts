@@ -1,27 +1,70 @@
 /**
  * TAMV INTEGRATION HUB
  * Punto de entrada unificado para todos los sistemas Isabella
+ * 
+ * NOTA: Este archivo re-exporta de forma explícita para evitar conflictos
  */
 
-// Core Systems
+// Core Systems - Re-exports explícitos sin conflictos
 export * from "./codex";
-export * from "./isabella-core";
-export * from "./isabella-nextgen";
-export * from "./governance-engine";
-export * from "./security-engine";
 
-// Re-exports principales
+// Isabella NextGen - Sistema principal
 export { 
-  isabella, 
-  IsabellaOrchestrator,
-  initializeIsabellaNextGen,
+  // Tipos
+  type EmotionalVector,
+  type IsabellaState,
+  type BookPIEntry,
+  type EOCTResult,
+  type DAOProposal,
+  type GuardianDecision,
+  type EthicalValidation,
+  type FraudSignal,
+  type ResilienceMetrics,
+  
+  // Configuración
+  ISABELLA_CONFIG,
+  ETHICAL_WEIGHTS,
+  DAO_CONFIG,
+  
+  // Funciones emocionales
   createEmotionalVector,
   analyzeEmotionalContent,
+  calculateEmotionalCoherence,
+  applyEOCTFilters,
+  
+  // Validación ética
   validateEthicalContent,
+  
+  // BookPI
+  generateDilithiumSignature,
+  generateMerkleRoot,
   createBookPIEntry,
-  calculateFraudScore
+  
+  // DAO
+  calculateQuorum,
+  evaluateProposal,
+  
+  // Anti-fraude
+  calculateFraudScore,
+  
+  // Resiliencia
+  calculateResilienceIndex,
+  
+  // Circuit Breaker
+  getCircuitBreaker,
+  recordFailure,
+  recordSuccess,
+  canExecute,
+  
+  // Orquestador
+  IsabellaOrchestrator,
+  isabella,
+  
+  // Inicialización
+  initializeIsabellaNextGen
 } from "./isabella-nextgen";
 
+// Governance Engine
 export {
   calculateReputationScore,
   calculateVotingPower,
@@ -31,6 +74,7 @@ export {
   createEmergencyAction
 } from "./governance-engine";
 
+// Security Engine
 export {
   calculateFraudRisk,
   createSentinelAlert,

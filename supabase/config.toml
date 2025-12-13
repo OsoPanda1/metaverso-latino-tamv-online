@@ -1,5 +1,11 @@
 project_id = "dpawoksdbkdicyfksinu"
 
+[functions.isabella-initiation]
+verify_jwt = false
+
+[functions.phoenix-protocol]
+verify_jwt = false
+
 [functions.ai-chat]
 verify_jwt = false
 
