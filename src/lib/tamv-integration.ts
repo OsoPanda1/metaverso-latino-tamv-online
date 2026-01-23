@@ -1,12 +1,23 @@
 /**
- * TAMV INTEGRATION HUB
- * Punto de entrada unificado para todos los sistemas Isabella
+ * TAMV INTEGRATION HUB v2.0
+ * Punto de entrada unificado con 7 CAPAS FEDERADAS
+ * Quantum Computing + 4D Rendering + Post-Quantum Security
  * 
- * NOTA: Este archivo re-exporta de forma explícita para evitar conflictos
+ * ARCHITECTURE:
+ * Layer 1: IDENTITY (ID-NVIDA, DID, Biometric)
+ * Layer 2: SECURITY (Anubis Sentinel, Ojo de Ra, BlackHole)
+ * Layer 3: GOVERNANCE (DAO, BookPI, Guardians)
+ * Layer 4: ECONOMY (Wallets, Credits, NFT)
+ * Layer 5: SOCIAL (Cells, Forks, Communities)
+ * Layer 6: EXPERIENCE (XR, DreamSpaces, 4D Render)
+ * Layer 7: INTELLIGENCE (Isabella IA, EOCT, Emotional Processing)
  */
 
-// Core Systems - Re-exports explícitos sin conflictos
+// Core Systems
 export * from "./codex";
+
+// Quantum Federation - 7 Layer Architecture
+export * from "./quantum-federation";
 
 // Isabella NextGen - Sistema principal
 export { 
