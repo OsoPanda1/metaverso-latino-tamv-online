@@ -2026,6 +2026,48 @@ export type Database = {
           },
         ]
       }
+      guardian_entities: {
+        Row: {
+          created_at: string
+          description: string | null
+          entity_name: string
+          entity_type: string
+          health_score: number | null
+          id: string
+          is_active: boolean | null
+          last_scan_at: string | null
+          threats_blocked: number | null
+          threats_detected: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          entity_name: string
+          entity_type: string
+          health_score?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_scan_at?: string | null
+          threats_blocked?: number | null
+          threats_detected?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          entity_name?: string
+          entity_type?: string
+          health_score?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_scan_at?: string | null
+          threats_blocked?: number | null
+          threats_detected?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       guardians: {
         Row: {
           alerts_enabled: boolean | null
@@ -3035,6 +3077,48 @@ export type Database = {
         }
         Relationships: []
       }
+      security_layers: {
+        Row: {
+          audit_score: number | null
+          audit_status: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          last_audit_at: string | null
+          layer_category: string
+          layer_name: string
+          layer_number: number
+          updated_at: string
+        }
+        Insert: {
+          audit_score?: number | null
+          audit_status?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_audit_at?: string | null
+          layer_category: string
+          layer_name: string
+          layer_number: number
+          updated_at?: string
+        }
+        Update: {
+          audit_score?: number | null
+          audit_status?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_audit_at?: string | null
+          layer_category?: string
+          layer_name?: string
+          layer_number?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       store_products: {
         Row: {
           artwork_id: string | null
@@ -3147,6 +3231,75 @@ export type Database = {
           metric_type?: string | null
           metric_value?: number | null
           recorded_at?: string | null
+        }
+        Relationships: []
+      }
+      system_security_config: {
+        Row: {
+          config_key: string
+          config_value: Json
+          created_at: string
+          id: string
+          is_active: boolean | null
+          last_verified_at: string | null
+          project_id: string
+          updated_at: string
+        }
+        Insert: {
+          config_key: string
+          config_value: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          last_verified_at?: string | null
+          project_id?: string
+          updated_at?: string
+        }
+        Update: {
+          config_key?: string
+          config_value?: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          last_verified_at?: string | null
+          project_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tamv_audit_log: {
+        Row: {
+          created_at: string
+          details: Json | null
+          executed_at: string
+          hash_verification: string | null
+          id: string
+          layer_number: number | null
+          project_id: string
+          ritual_name: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          executed_at?: string
+          hash_verification?: string | null
+          id?: string
+          layer_number?: number | null
+          project_id?: string
+          ritual_name: string
+          status: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          executed_at?: string
+          hash_verification?: string | null
+          id?: string
+          layer_number?: number | null
+          project_id?: string
+          ritual_name?: string
+          status?: string
         }
         Relationships: []
       }
@@ -3707,6 +3860,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      run_full_security_audit: { Args: never; Returns: Json }
+      verify_security_layer: { Args: { p_layer_number: number }; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
