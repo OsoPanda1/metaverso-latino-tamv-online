@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/Navigation";
 import { MatrixBackground } from "@/components/MatrixBackground";
-import { VideoHero } from "@/components/home/VideoHero";
+import { IsabellaHeroBanner } from "@/components/home/IsabellaHeroBanner";
 import { DreamSpacesGrid } from "@/components/home/DreamSpacesGrid";
 import { FourColumnsSection } from "@/components/home/FourColumnsSection";
 import { OniricBridgesSection } from "@/components/home/OniricBridgesSection";
+import { OmniverseDashboard } from "@/components/home/OmniverseDashboard";
 import { 
   FloatingToolbar, 
   leftToolbarItems, 
@@ -36,14 +37,14 @@ const Index = () => {
       <FloatingToolbar position="top" items={topToolbarItems} accentColor="accent" />
       <FloatingToolbar position="bottom" items={bottomToolbarItems} accentColor="destructive" />
 
-      {/* Main Content - Minimal padding, maximum visual space */}
+      {/* Main Content */}
       <main className="relative z-10 pt-20 pb-16 px-3 md:px-6">
-        <div className="max-w-[1600px] mx-auto space-y-8">
-          {/* Hero Video */}
-          <VideoHero 
-            title="TAMV"
-            subtitle="El Metaverso Latinoamericano • Isabella IA NextGen™"
-          />
+        <div className="max-w-[1800px] mx-auto space-y-12">
+          {/* Isabella Hero Banner - Nuevo componente trascendental */}
+          <IsabellaHeroBanner />
+
+          {/* Omniverse Dashboard - 7 Capas Federadas + Seguridad */}
+          <OmniverseDashboard />
 
           {/* DreamSpaces Grid */}
           <DreamSpacesGrid />
