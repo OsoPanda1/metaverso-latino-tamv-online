@@ -8,6 +8,8 @@ import { DreamSpacesGrid } from "@/components/home/DreamSpacesGrid";
 import { FourColumnsSection } from "@/components/home/FourColumnsSection";
 import { OniricBridgesSection } from "@/components/home/OniricBridgesSection";
 import { OmniverseDashboard } from "@/components/home/OmniverseDashboard";
+import { ImmortalCoreSecurityDashboard } from "@/components/security/ImmortalCoreSecurityDashboard";
+import { DreamSpacesVisualizer } from "@/components/dreamworld/DreamSpacesVisualizer";
 import { 
   FloatingToolbar, 
   leftToolbarItems, 
@@ -40,11 +42,17 @@ const Index = () => {
       {/* Main Content */}
       <main className="relative z-10 pt-20 pb-16 px-3 md:px-6">
         <div className="max-w-[1800px] mx-auto space-y-12">
-          {/* Isabella Hero Banner - Nuevo componente trascendental */}
+          {/* Isabella Hero Banner - Transcendental 7th Gen */}
           <IsabellaHeroBanner />
 
-          {/* Omniverse Dashboard - 7 Capas Federadas + Seguridad */}
+          {/* Omniverse Dashboard - 7 Federated Layers */}
           <OmniverseDashboard />
+
+          {/* Immortal Core Security - 30 Layers */}
+          <ImmortalCoreSecurityDashboard />
+
+          {/* DreamWorld - 8 DreamSpaces */}
+          <DreamSpacesVisualizer />
 
           {/* DreamSpaces Grid */}
           <DreamSpacesGrid />
