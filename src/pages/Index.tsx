@@ -10,6 +10,10 @@ import { OniricBridgesSection } from "@/components/home/OniricBridgesSection";
 import { OmniverseDashboard } from "@/components/home/OmniverseDashboard";
 import { ImmortalCoreSecurityDashboard } from "@/components/security/ImmortalCoreSecurityDashboard";
 import { DreamSpacesVisualizer } from "@/components/dreamworld/DreamSpacesVisualizer";
+ import { EcosystemOverview } from "@/components/ecosystem/EcosystemOverview";
+ import { MembershipShowcase } from "@/components/ecosystem/MembershipShowcase";
+ import { UniversityCatalog } from "@/components/ecosystem/UniversityCatalog";
+ import { GiftsShowcase } from "@/components/ecosystem/GiftsShowcase";
 import { 
   FloatingToolbar, 
   leftToolbarItems, 
@@ -57,6 +61,18 @@ const Index = () => {
           {/* DreamSpaces Grid */}
           <DreamSpacesGrid />
 
+           {/* Ecosystem Overview - All Modules */}
+           <EcosystemOverview />
+ 
+           {/* CGIFTS 3D/XR */}
+           <GiftsShowcase />
+ 
+           {/* UTAMV University */}
+           <UniversityCatalog />
+ 
+           {/* Memberships */}
+           <MembershipShowcase />
+ 
           {/* 4 Columns: Groups, Channels, Lives, Trends */}
           <FourColumnsSection />
 
